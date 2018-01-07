@@ -182,8 +182,25 @@ body.login-close #login {
     width:6em
 }
 #connect{
+	transition: .2s;
     text-align: center;
 }
+#helpText {
+	opacity: 100;
+	text-align: center;
+	color: orange;
+	size: 20px;
+	animation-name: flashing;
+	animation-duration: .5s;
+	animation-iteration-count: infinite;
+	transition: .5s;
+}
+
+@keyframes flashing {
+	from {color: white;}
+	to {color: orange;}
+}
+
 /*
  Blur transition that does not work
 
