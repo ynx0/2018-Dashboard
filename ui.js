@@ -62,16 +62,27 @@ if (noElectron) {
  * Function to be called when robot connects
  * @param {boolean} connected 
  */
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
 function onRobotConnection(connected) {
+    var fadeHelp = document.getElementById("helpText");
     var state = connected ? 'Robot connected!' : 'Robot disconnected.';
     console.log(state);
     ui.robotState.data = state;
     if (!noElectron) {
         if (connected) {
+            fadeHelp.style.opacity = "0";
             // On connect hide the connect popup
             document.body.classList.toggle('login-close', true);
         }
         else {
+            fadeHelp.style.opacity = "100";
             // On disconnect show the connect popup
             document.body.classList.toggle('login-close', false);
             // Add Enter key handler
@@ -91,8 +102,9 @@ function onRobotConnection(connected) {
             // On click try to connect and disable the input and the button
             ipc.send('connect', address.value);
             address.disabled = true;
-            connect.disabled = true;
+            //connect.disabled = true;
             connect.firstChild.data = 'Connecting';
+            sleep(200);
         }
     }
 }
@@ -138,11 +150,14 @@ NetworkTables.addKeyListener('/SmartDashboard/example_variable', (key, value) =>
     ui.example.readout.data = 'Value is ' + (value ? 'true' : 'false');
 });
 NetworkTables.addKeyListener('/SmartDashboard/match_time', (key, value) => {
+    //Turn seconds passed to time in minutes:seconds as m:visualS
     var counter = Math.floor(value).toFixed(0);
-    console.log(counter);
+    //M = minutes
     var m = Math.floor(counter/60);
+    //visualS = seconds
     var visualS = (counter % 60);
 
+    //Control what is displayed on the clock
     if (visualS < 10) {
         ui.timer.firstChild.data = m + ':0' + visualS;
     }
@@ -150,6 +165,7 @@ NetworkTables.addKeyListener('/SmartDashboard/match_time', (key, value) => {
         ui.timer.firstChild.data = m + ':' + visualS;
     }
     
+    //Change colors depending on time left in game
     if (value < 30 && value > 15) {
         ui.timer.style.color = '#ffff30';
     }
@@ -171,47 +187,6 @@ NetworkTables.addKeyListener('/SmartDashboard/match_time', (key, value) => {
     else {
         ui.timer.style.color = 'white';
     }
-    /*
-    // Sometimes, NetworkTables will pass booleans as strings. This corrects for that.
-    if (typeof value === 'string')
-        value = value === 'true';
-    // When this NetworkTables variable is true, the timer will start.
-    // You shouldn't need to touch this code, but it's documented anyway in case you do.
-    var s = 135;
-    if (value) {
-        // Make sure timer is reset to black when it starts
-        ui.timer.style.color = 'black';
-        // Function below adjusts time left every second
-        var countdown = setInterval(function () {
-            s--; // Subtract one second
-            // Minutes (m) is equal to the total seconds divided by sixty with the decimal removed.
-            var m = Math.floor(s / 60);
-            // Create seconds number that will actually be displayed after minutes are subtracted
-            var visualS = (s % 60);
-            // Add leading zero if seconds is one digit long, for proper time formatting.
-            visualS = visualS < 10 ? '0' + visualS : visualS;
-            if (s < 0) {
-                // Stop countdown when timer reaches zero
-                clearTimeout(countdown);
-                return;
-            }
-            else if (s <= 15) {
-                // Flash timer if less than 15 seconds left
-                ui.timer.style.color = (s % 2 === 0) ? '#FF3030' : 'transparent';
-            }
-            else if (s <= 30) {
-                // Solid red timer when less than 30 seconds left.
-                ui.timer.style.color = '#FF3030';
-            }
-            ui.timer.firstChild.data = m + ':' + visualS;
-        }, 1000);
-    }
-    else {
-        s = 135;
-    }
-    NetworkTables.putValue(key, false);
-    */
-
 });
 
 // Load list of prewritten autonomous modes
