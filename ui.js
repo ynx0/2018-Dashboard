@@ -104,7 +104,7 @@ function onRobotConnection(connected) {
             address.disabled = true;
             //connect.disabled = true;
             connect.firstChild.data = 'Connecting';
-            sleep(200);
+            sleep(1000);
         }
     }
 }

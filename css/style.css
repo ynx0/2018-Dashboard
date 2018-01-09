@@ -14,7 +14,8 @@ body {
     user-select: none;
     color: white;
     overflow: hidden;
-    background: #222;
+    background: #222; 
+
 }
 button, input[type="text"], input[type="number"], .select-container, select {
     color: white;
