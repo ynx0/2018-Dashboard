@@ -1,3 +1,4 @@
+var player = require('play-sound') (opts = {})
 // Define UI elements
 let ui = {
     timer: document.getElementById('timer'),
@@ -70,6 +71,11 @@ function sleep(milliseconds) {
     }
   }
 }
+
+function checkCamera() {
+    
+}
+
 function onRobotConnection(connected) {
     var fadeHelp = document.getElementById("helpText");
     var state = connected ? 'Robot connected!' : 'Robot disconnected.';
@@ -82,6 +88,7 @@ function onRobotConnection(connected) {
             document.body.classList.toggle('login-close', true);
         }
         else {
+            console.log("Scanning for robot");
             fadeHelp.style.opacity = "100";
             // On disconnect show the connect popup
             document.body.classList.toggle('login-close', false);
@@ -102,9 +109,9 @@ function onRobotConnection(connected) {
             // On click try to connect and disable the input and the button
             ipc.send('connect', address.value);
             address.disabled = true;
-            //connect.disabled = true;
+            connect.disabled = true;
             connect.firstChild.data = 'Connecting';
-            sleep(1000);
+            //sleep(200);
         }
     }
 }
@@ -138,6 +145,24 @@ NetworkTables.addKeyListener('/SmartDashboard/arm/encoder', (key, value) => {
     // Rotate the arm in diagram to match real arm
     ui.robotDiagram.arm.style.transform = `rotate(${armAngle}deg)`;
 });
+
+function armMover(value) {
+    ui.robotDiagram.arm.style.transform = `rotate(${value}deg)`;
+}
+
+NetworkTables.addKeyListener('/SmartDashboard/beep', (key,value) => {
+
+    if (typeof value === 'string')
+        value = value === 'true';
+
+    if (value === true) {
+        player.play('Beep.wav', function(err){});
+    }
+})
+
+function beep() {
+    player.play('Beep.wav', function(err){})
+}
 
 // This button is just an example of triggering an event on the robot by clicking a button.
 NetworkTables.addKeyListener('/SmartDashboard/example_variable', (key, value) => {

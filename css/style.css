@@ -132,6 +132,7 @@ text {
     right: 1vw;
 }
 #robot-arm {
+	transition: .3s;
     -webkit-transform-origin: right;
     -ms-transform-origin: right;
     transform-origin: right;
@@ -187,6 +188,7 @@ body.login-close #login {
     text-align: center;
 }
 #helpText {
+	transition: 3s;
 	opacity: 100;
 	text-align: center;
 	color: orange;
@@ -200,6 +202,13 @@ body.login-close #login {
 @keyframes flashing {
 	from {color: white;}
 	to {color: orange;}
+}
+
+#cameraFeed {
+	border-color: black;
+	border-width: 5px;
+	width: 640px;
+	height: 480px;
 }
 
 /*

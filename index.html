@@ -7,7 +7,7 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="checkCamera()">
     <!-- Clock that shows up in top left -->
     <div id="timer">2:15</div>
     <header>
@@ -17,7 +17,9 @@
     </header>
     <!-- You'll need to mess around with the CSS of #camera (found in css/style.css) to get it to work.
         More explanation in that CSS rule. -->
-    <div id="camera"></div>
+    <div id="camera">
+        <image id="cameraFeed" src="http://192.168.9.91:8080"> <!-- Thomas_Tank_Engine_1.png -->
+    </div>
     <div id="tuning" style="display: none;">
         <input id="name" type="text" placeholder="Property">
         <input id="value" type="text" placeholder="Value">
@@ -70,8 +72,11 @@
         <div id="login">
             <input id="connect-address" type="text" value="localhost" disabled>
             <button id="connect" disabled>Connecting</button>
+            <button onclick="armMover(90)">Move Arm</button>
+            <button onclick="beep()">Play Beep</button>
         </div>
     </div>
+
     <script src="tryIPC.js"></script>
     <script src="networktables/networktables.js"></script>
     <script src="ui.js"></script>

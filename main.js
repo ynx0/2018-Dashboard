@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
+
 const electron = require("electron");
 const wpilib_NT = require("wpilib-nt-client");
 const client = new wpilib_NT.Client();
