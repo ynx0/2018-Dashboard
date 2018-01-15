@@ -63,6 +63,23 @@ if (noElectron) {
  * Function to be called when robot connects
  * @param {boolean} connected 
  */
+
+function collectedCube(collected) {
+    var cube = document.getElementById("Cube");
+    if (collected === true) {
+        cube.style.opacity = 100;
+        cube.style.x = 139;
+        document.body.style.backgroundColor = 'yellow';//'#FFD52E';
+        sleep(10)
+
+    }
+    else if (collected === false) {
+        cube.style.opacity = 0;
+        cube.style.x= 50;
+
+    }
+}
+
 function sleep(milliseconds) {
   var start = new Date().getTime();
   for (var i = 0; i < 1e7; i++) {
@@ -73,7 +90,21 @@ function sleep(milliseconds) {
 }
 
 function checkCamera() {
+    var image = document.getElementById("cameraFeed");
+    image.src = "http://192.168.9.91:8080";
+}
+
+function moveElevator(value) {
+    if (value === 0) {
+        value = -10;
+    }
+    value = 100-value
     
+    var arm = document.getElementById("ElevatorCarriage");
+    var cube = document.getElementById("Cube");
+    var movement = (value * .01) * 200;
+    arm.style.y = 160+movement;
+    cube.style.y = 125+movement;
 }
 
 function onRobotConnection(connected) {
@@ -162,6 +193,7 @@ NetworkTables.addKeyListener('/SmartDashboard/beep', (key,value) => {
 
 function beep() {
     player.play('Beep.wav', function(err){})
+    //player.play('Demonic Beep.wav', function(err){})
 }
 
 // This button is just an example of triggering an event on the robot by clicking a button.

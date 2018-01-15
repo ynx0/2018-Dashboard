@@ -66,8 +66,8 @@ function createWindow() {
     });
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 1366,
-        height: 570,
+        width: 2560,
+        height: 1600,
         // 1366x570 is a good standard height, but you may want to change this to fit your DriverStation's screen better.
         // It's best if the dashboard takes up as much space as possible without covering the DriverStation application.
         // The window is closed until the python server is ready

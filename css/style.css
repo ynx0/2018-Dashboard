@@ -7,6 +7,7 @@
     display: none;
 }
 body {
+	transition: .3s;
     font: 16px sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -14,8 +15,7 @@ body {
     user-select: none;
     color: white;
     overflow: hidden;
-    background: #222; 
-
+    /* background: #222; */
 }
 button, input[type="text"], input[type="number"], .select-container, select {
     color: white;
@@ -68,6 +68,9 @@ header {
     color: white;
 }
 #camera {
+	display: flex;
+	justify-content: center;
+	align-content: center;
     padding: 0;
     position: fixed;
     bottom: 0;
@@ -209,6 +212,23 @@ body.login-close #login {
 	border-width: 5px;
 	width: 640px;
 	height: 480px;
+}
+
+#reloadCamera {
+	/* align-self: center; */
+}
+#reloadCameraButton {
+	top: 490px;
+	position: absolute;
+	z-index: 10;
+}
+
+#ElevatorCarriage {
+	transition: .3s;
+}
+
+#Cube {
+	transition: .3s;
 }
 
 /*

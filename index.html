@@ -17,9 +17,14 @@
     </header>
     <!-- You'll need to mess around with the CSS of #camera (found in css/style.css) to get it to work.
         More explanation in that CSS rule. -->
+    
     <div id="camera">
-        <image id="cameraFeed" src="http://192.168.9.91:8080"> <!-- Thomas_Tank_Engine_1.png -->
+        <image onclick="reloadFeed()" id="cameraFeed" src="http://192.168.9.91:8080"> <!-- Thomas_Tank_Engine_1.png -->
+        <div id="reloadCameraButton">
+            <button onclick = "checkCamera()" id="reloadCamera">Reload Feed</button>
+        </div>
     </div>
+    
     <div id="tuning" style="display: none;">
         <input id="name" type="text" placeholder="Property">
         <input id="value" type="text" placeholder="Value">
@@ -37,12 +42,19 @@
         </svg>
         <!-- Example robot diagram, arm moves when encoder value changes -->
         <svg id="robot-diagram" width="332" height="450">
-            <text x="120" y="340">Robot Diagram</text>
+            <!-- <text x="120" y="340">Robot Diagram</text> -->
+            <rect id="Elevator" x="180" y="160" width="10" height="200"></rect>
+
+            <rect id="ElevatorCarriage" x="140" y="210" width="50" height="10"></rect>
+            <rect style="fill:rgb(255,213,46);stroke-width:0;" id="Cube" x="139" y="175" width="34" height="34"></rect>
+
             <rect x="75" y="360" width="230" height="40"></rect>
             <rect x="85" y="370" width="210" height="40"></rect>
-            <rect id="robot-arm" x="5" y="375" width="80" height="10"></rect>
-            <circle cx="100" cy="410" r="25"></circle>
-            <circle cx="260" cy="410" r="25"></circle>
+            <circle cx="100" cy="410" r="15"></circle>
+            <circle cx="160" cy="410" r="15"></circle>
+            <circle cx="200" cy="410" r="15"></circle>
+            <circle cx="260" cy="410" r="15"></circle>
+
             <rect x="60" y="380" width="250" height="30"></rect>
             <text id="team" x="185" y="405" text-anchor="middle">401</text>
         </svg>
@@ -51,29 +63,42 @@
     <aside>
         <!-- Example button which toggles /SmartDashboard/exampleValue NetworkTables value.
             The <p> below then says the value. -->
+        <!--
         <div id="example-section">
             <button id="example-button">Change example value</button>
             <p id="example-readout">Value is undefined</p>
         </div>
+
+        -->
+
         <!-- Autonomous selector -->
+
+        <!--
         <div class="select-container">
             <select id="auto-select">
                 <option>No auto modes found</option>
-                <!-- This gets populated by JS -->
             </select>
         </div>
+        
         <div>
             <p>Adjust arm height</p>
             <input id="arm-position" type="range" min="0" max="1200" value="770">
         </div>
+        -->
     </aside>
     <p id="helpText">Dashboard will connect automatically when robot is found</p>
     <div class="greybox">
         <div id="login">
             <input id="connect-address" type="text" value="localhost" disabled>
             <button id="connect" disabled>Connecting</button>
-            <button onclick="armMover(90)">Move Arm</button>
+            <button onclick="collectedCube(true)">Get Cube</button>
+            <button onclick="collectedCube(false)">Drop Cube</button>
             <button onclick="beep()">Play Beep</button>
+            <button onclick = "checkCamera()" id="reloadCameraMenu">Reload</button>
+            <button onclick="moveElevator(100)">UP</button>
+            <button onclick="moveElevator(50)">MID</button>
+            <button onclick="moveElevator(0)">DOWN</button>
+            
         </div>
     </div>
 
