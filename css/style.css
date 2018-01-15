@@ -68,6 +68,9 @@ header {
     color: white;
 }
 #camera {
+	animation-duration: .5s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
 	display: flex;
 	justify-content: center;
 	align-content: center;
@@ -82,6 +85,26 @@ header {
     /* You'll need to mess with this a bit to get your camera to work. Replace the url with a live-updating image feed from your camera. Using other camera streaming systems will require some tweaking. */
     /*background-image: url('LINK TO CAMERA SOURCE HERE');*/
 }
+@keyframes flash {
+	0% {background-color: #333;}
+	8% {background-color: #333;}
+	10% {background-color: #FFD52E;}
+	12% {background-color: #333;}
+	28% {background-color: #333;}
+	30% {background-color: #FFD52E;}
+	32% {background-color: #333;}
+	48% {background-color: #333;}
+	50% {background-color: #FFD52E;}
+	52% {background-color: #333;}
+	68% {background-color: #333;}
+	70% {background-color: #FFD52E;}
+	72% {background-color: #333;}
+	88% {background-color: #333;}
+	90% {background-color: #FFD52E;}
+	92% {background-color: #333;}
+	100% {background-color: #333;}
+}
+
 #tuning {
     width: 50vw;
     height: 80vh;

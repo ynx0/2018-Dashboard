@@ -64,14 +64,32 @@ if (noElectron) {
  * @param {boolean} connected 
  */
 
+
+/*
+element.addEventListener("click", function(e){
+  e.preventDefault;
+  
+  element.classList.remove("run-animation");
+  void element.offsetWidth;
+  element.classList.add("run-animation");
+}, false);
+*/
+function runFlash(element) {
+    console.log('ran');
+    element.style.animationName = null;
+    element.offsetHeight; /* trigger reflow */
+    element.style.animationName = "flash";
+}
+
 function collectedCube(collected) {
     var cube = document.getElementById("Cube");
+    var cameraBackground = document.getElementById("camera");
     if (collected === true) {
         cube.style.opacity = 100;
         cube.style.x = 139;
-        document.body.style.backgroundColor = 'yellow';//'#FFD52E';
-        sleep(10)
-
+        //' #333 to #FFD52E';
+        runFlash(cameraBackground);
+        player.play('Beep.wav', function(err){})
     }
     else if (collected === false) {
         cube.style.opacity = 0;
