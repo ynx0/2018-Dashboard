@@ -88,19 +88,19 @@ header {
 @keyframes flash {
 	0% {background-color: #333;}
 	8% {background-color: #333;}
-	10% {background-color: #FFD52E;}
+	10% {background-color: #ffc400;}
 	12% {background-color: #333;}
 	28% {background-color: #333;}
-	30% {background-color: #FFD52E;}
+	30% {background-color: #ffc400;}
 	32% {background-color: #333;}
 	48% {background-color: #333;}
-	50% {background-color: #FFD52E;}
+	50% {background-color: #ffc400;}
 	52% {background-color: #333;}
 	68% {background-color: #333;}
-	70% {background-color: #FFD52E;}
+	70% {background-color: #ffc400;}
 	72% {background-color: #333;}
 	88% {background-color: #333;}
-	90% {background-color: #FFD52E;}
+	90% {background-color: #f0c400;}
 	92% {background-color: #333;}
 	100% {background-color: #333;}
 }

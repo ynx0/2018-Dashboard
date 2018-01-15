@@ -108,6 +108,7 @@ function sleep(milliseconds) {
 }
 
 function checkCamera() {
+    console.log("Checking for camera");
     var image = document.getElementById("cameraFeed");
     image.src = "http://192.168.9.91:8080";
 }
@@ -200,7 +201,6 @@ function armMover(value) {
 }
 
 NetworkTables.addKeyListener('/SmartDashboard/beep', (key,value) => {
-
     if (typeof value === 'string')
         value = value === 'true';
 

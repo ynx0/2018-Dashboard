@@ -7,9 +7,9 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body onload="checkCamera()">
+<body>
     <!-- Clock that shows up in top left -->
-    <div id="timer">2:15</div>
+    <div id="timer">N/A</div>
     <header>
         <!-- Tells whether robot is connected to dashboard. -->
         <div id="robot-state">Unknown state</div>
@@ -19,7 +19,8 @@
         More explanation in that CSS rule. -->
     
     <div id="camera">
-        <image onclick="checkCamera()" id="cameraFeed" src="Thomas_Tank_Engine_1.png"> <!--http://192.168.9.91:8080-->
+        <image onclick="checkCamera()" id="cameraFeed" src="http://192.168.9.91:8080" onerror="this.src='Thomas_Tank_Engine_1.png';"> </image>
+
         <div id="reloadCameraButton">
             <button onclick = "checkCamera()" id="reloadCamera">Reload Feed</button>
         </div>
@@ -52,8 +53,8 @@
             <rect x="85" y="370" width="210" height="40"></rect>
             <circle cx="100" cy="410" r="15"></circle>
             <circle cx="160" cy="410" r="15"></circle>
-            <circle cx="200" cy="410" r="15"></circle>
-            <circle cx="260" cy="410" r="15"></circle>
+            <circle cx="210" cy="410" r="15"></circle>
+            <circle cx="270" cy="410" r="15"></circle>
 
             <rect x="60" y="380" width="250" height="30"></rect>
             <text id="team" x="185" y="405" text-anchor="middle">401</text>
@@ -89,10 +90,11 @@
     <p id="helpText">Dashboard will connect automatically when robot is found</p>
     <div class="greybox">
         <div id="login">
-            <input id="connect-address" type="text" value="localhost" disabled>
+            <input id="connect-address" type="text" value="10.4.1.2" disabled>
             <button id="connect" disabled>Connecting</button>
             <button onclick="collectedCube(true)">Get Cube</button>
             <button onclick="collectedCube(false)">Drop Cube</button>
+            <button onclick="moveGyro(90)">Move Gyro</button>
             <button onclick="beep()">Play Beep</button>
             <button onclick = "checkCamera()" id="reloadCameraMenu">Reload</button>
             <button onclick="moveElevator(100)">UP</button>
