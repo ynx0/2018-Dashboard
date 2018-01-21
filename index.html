@@ -9,8 +9,8 @@
 
 <body>
     <!-- Clock that shows up in top left -->
-    <div id="timer">N/A</div>
-    <header>
+    <div id="timer">2:15</div>
+    <header id="tuner">
         <!-- Tells whether robot is connected to dashboard. -->
         <div id="robot-state">Unknown state</div>
         <button id="tuning-button">Tuning</button>
@@ -33,14 +33,30 @@
         <button id="get">Get</button>
     </div>
     <!-- The main body of the dashboard, by default contains the gyro monitor and the robot diagram -->
-    <article>
+    <div id="gyroArticle">
         <!-- Gyroscope -->
         <svg id="gyro">
-            <circle cx="85" cy="85" r="83"></circle>
-            <circle cx="85" cy="85" r="50"></circle>
-            <rect id="gyro-arm" x="80" y="5" width="10" height="80"></rect>
-            <text id="gyro-number" x="90" y="115">0º</text>
+            <circle id="outerGyroCircle" cx="10vh" cy="9vh" r="7.6vh"></circle>
+            <circle id="innerGyroCircle" cx="10vh" cy="9vh" r="4.6vh"></circle>
+            <!-- <rect id="gyroAngle90" x="0" y="0" height="7.6vh" width="2px"></rect> -->
+
+            <rect id="gyroAngle0" x="10vh" y="-3.5vh" width="1" height="22vh"></rect>
+
+            <!-- <rect id="gyro-arm" x="7.6vh" y="5" width="10" height="7.5vh"></rect>
+            <text id="gyro-number" x="90" y="115">0º</text> -->
         </svg>
+    </div>
+
+    <div id="gyroAricle2">
+        <!-- Gyroscope -->
+        <svg id="gyro">
+            <circle id="outerGyroCircle" cx="7.6vh" cy="85" r="7.6vh"></circle>
+            <circle id="innerGyroCircle" cx="7.6vh" cy="85" r="4.6vh"></circle>
+            <rect id="gyro-arm" x="7.6vh" y="5" width="10" height="7.5vh"></rect>
+            <text id="`" x="90" y="115">0º</text>
+        </svg>
+    </div>
+    <div id="svgArticle">
         <!-- Example robot diagram, arm moves when encoder value changes -->
         <svg id="robot-diagram" width="332" height="450">
             <!-- <text x="120" y="340">Robot Diagram</text> -->
@@ -59,9 +75,11 @@
             <rect x="60" y="380" width="250" height="30"></rect>
             <text id="team" x="185" y="405" text-anchor="middle">401</text>
         </svg>
-    </article>
+    </div>
     <!-- The sidebar of the dashboard. Designed for smaller control elements like selection boxes and small buttons. -->
+    <!--
     <aside>
+    -->
         <!-- Example button which toggles /SmartDashboard/exampleValue NetworkTables value.
             The <p> below then says the value. -->
         <!--
@@ -86,7 +104,7 @@
             <input id="arm-position" type="range" min="0" max="1200" value="770">
         </div>
         -->
-    </aside>
+    <!-- </aside> -->
     <p id="helpText">Dashboard will connect automatically when robot is found</p>
     <div class="greybox">
         <div id="login">

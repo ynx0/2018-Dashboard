@@ -32,6 +32,16 @@ let ui = {
 let address = document.getElementById('connect-address'),
     connect = document.getElementById('connect');
 
+function moveGyro(value) {
+    ui.gyro.val = value;
+    ui.gyro.visualVal = Math.floor(ui.gyro.val - ui.gyro.offset);
+    if (ui.gyro.visualVal < 0) {
+        ui.gyro.visualVal += 360;
+    }
+    ui.gyro.arm.style.transform = `rotate(${ui.gyro.visualVal}deg)`;
+    ui.gyro.number.innerHTML = ui.gyro.visualVal + 'º';
+}
+
 // Sets function to be called on NetworkTables connect. Commented out because it's usually not necessary.
 // NetworkTables.addWsConnectionListener(onNetworkTablesConnection, true);
 
@@ -87,14 +97,13 @@ function collectedCube(collected) {
     if (collected === true) {
         cube.style.opacity = 100;
         cube.style.x = 139;
-        //' #333 to #FFD52E';
+        //'#333 to #FFD52E';
         runFlash(cameraBackground);
         player.play('Beep.wav', function(err){})
     }
     else if (collected === false) {
         cube.style.opacity = 0;
         cube.style.x= 50;
-
     }
 }
 
@@ -179,6 +188,7 @@ let updateGyro = (key, value) => {
     ui.gyro.number.innerHTML = ui.gyro.visualVal + 'º';
 };
 NetworkTables.addKeyListener('/SmartDashboard/drive/navx/yaw', updateGyro);
+
 
 // The following case is an example, for a robot with an arm at the front.
 // Info on the actual robot that this works with can be seen at thebluealliance.com/team/1418/2016.

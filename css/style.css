@@ -1,3 +1,11 @@
+/*
+Colors:
+
+	Purple: #9149A8;
+	Element Grey: #293A41;
+	Between Elements: #1F3239;
+	Blue: 17C5DA;
+*/
 * {
     box-sizing: border-box;
     margin: 0;
@@ -15,7 +23,7 @@ body {
     user-select: none;
     color: white;
     overflow: hidden;
-    /* background: #222; */
+    background: #1F3239;
 }
 button, input[type="text"], input[type="number"], .select-container, select {
     color: white;
@@ -25,6 +33,14 @@ button, input[type="text"], input[type="number"], .select-container, select {
     padding: 6px 8px;
     cursor: pointer;
     outline: 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+button:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+button:active {
+	background-color: #17C5DA;
 }
 .select-container {
     padding: 0;
@@ -48,26 +64,46 @@ body > * {
     padding: 10px;
     position: fixed;
     overflow: scroll;
-    background: #222;
+    background: #293A41;
 }
 #timer {
     font-family: monospace;
     display: block;
     height: 20vh;
-    width: 30vw;
+    width: 26.5vw;
+    position: absolute;
     top: 0;
     left: 0;
+
+  	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
+    bottom: 0vh;
     font-size: 20vh;
+
     line-height: .8;
+}
+#timer:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 header {
     width: 20vw;
     height: 20vh;
     top: 0;
-    left: 30vw;
+    left: 27.5vw;
     color: white;
 }
+#tuner {
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+#tuner:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
 #camera {
+  	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
 	animation-duration: .5s;
 	animation-iteration-count: 1;
 	animation-timing-function: linear;
@@ -75,16 +111,37 @@ header {
 	justify-content: center;
 	align-content: center;
     padding: 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 50vw;
-    height: 80vh;
+    position: absolute;
+    top: 21.5vh;
+    width: 640px;
+    height: 530px;
     overflow: hidden;
-    background-color: #333;
+    background-color: rgb(41,58,65)/* #293A41; */
     /* You'll need to mess with this a bit to get your camera to work. Replace the url with a live-updating image feed from your camera. Using other camera streaming systems will require some tweaking. */
     /*background-image: url('LINK TO CAMERA SOURCE HERE');*/
 }
+#camera:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+#cameraFeed {
+	position: absolute;
+	border-color: black;
+	border-width: 5px;
+	width: 640px;
+	height: 480px;
+}
+
+#reloadCamera {
+	/* align-self: center; */
+}
+#reloadCameraButton {
+	top: 490px;
+	position: absolute;
+	z-index: 10;
+}
+
+
 @keyframes flash {
 	0% {background-color: #333;}
 	8% {background-color: #333;}
@@ -127,9 +184,9 @@ svg * {
     stroke: white;
     fill: #222;
     stroke-width: 2;
-    -webkit-transform-origin: center;
-    -ms-transform-origin: center;
-    transform-origin: center;
+    -webkit-transform-origin: bottom;
+    -ms-transform-origin: bottom;
+    transform-origin: bottom;
 }
 text {
     font-size: 16px;
@@ -137,25 +194,62 @@ text {
     stroke: none;
     fill: white;
 }
+#svgArticle {
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+	height: 320px;
+	width: 332px;
+	top: 21.5vh;
+	left: 654px
+}
+#svgArticle:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+#gyroAricle2 {
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    height: 20vh;
+    left: 70vw;
+}
+#gyroArticle {
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    height: 20vh;
+    width: 20vh;
+    left: 48.6vw;
+}
+#gyroArticle:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
 #gyro {
-    width: 175px;
-    height: 175px;
-    margin-left: 30px;
-    margin-top: 15px;
+	margin-top: -10px;
+	margin-left: -10px;
+    width: 20vh;
+    height: 20vh;
 }
 #gyro-arm {
-    -webkit-transform-origin: bottom;
-    -ms-transform-origin: bottom;
-    transform-origin: bottom;
+    -webkit-transform-origin: center;
+    -ms-transform-origin: center;
+    transform-origin: center;
 }
 #gyro-number {
     font-size: 25px;
     text-anchor: middle;
 }
+
+#outerGyroCircle {
+
+}
+
+#innerGyroCircle {
+
+}
+
 #robot-diagram {
     position: absolute;
     bottom: 1px;
-    right: 1vw;
+    right: 19.2px;
 }
 #robot-arm {
 	transition: .3s;
@@ -226,24 +320,9 @@ body.login-close #login {
 }
 
 @keyframes flashing {
-	from {color: white;}
-	to {color: orange;}
-}
-
-#cameraFeed {
-	border-color: black;
-	border-width: 5px;
-	width: 640px;
-	height: 480px;
-}
-
-#reloadCamera {
-	/* align-self: center; */
-}
-#reloadCameraButton {
-	top: 490px;
-	position: absolute;
-	z-index: 10;
+	0% {color: white;}
+	50% {color: #9149A8;}
+	100% {color: white;}
 }
 
 #ElevatorCarriage {
