@@ -26,11 +26,12 @@ body {
     background: #1F3239;
 }
 button, input[type="text"], input[type="number"], .select-container, select {
+    font-family: 'Quicksand', sans-serif;
     color: white;
     background: #444;
     border: none;
     font-size: 14px;
-    padding: 6px 8px;
+    padding: 8px 8px;
     cursor: pointer;
     outline: 0;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -69,8 +70,8 @@ body > * {
 #timer {
     font-family: monospace;
     display: block;
-    height: 20vh;
-    width: 26.5vw;
+    height: 150px;
+    width: 430px;
     position: absolute;
     top: 0;
     left: 0;
@@ -79,7 +80,7 @@ body > * {
   	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
     bottom: 0vh;
-    font-size: 20vh;
+    font-size: 180px;
 
     line-height: .8;
 }
@@ -96,6 +97,9 @@ header {
 #tuner {
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  	left: 450px;
+  	width: 600px;
+    height: 150px;
 }
 #tuner:hover {
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -111,8 +115,8 @@ header {
 	justify-content: center;
 	align-content: center;
     padding: 0;
-    position: absolute;
-    top: 21.5vh;
+    position: relative;
+    top: 170px;
     width: 640px;
     height: 530px;
     overflow: hidden;
@@ -166,7 +170,6 @@ header {
     width: 50vw;
     height: 80vh;
     bottom: 0;
-    left: 0;
 }
 #tuning div {
     margin: 20px 0;
@@ -182,7 +185,7 @@ article {
 }
 svg * {
     stroke: white;
-    fill: #222;
+    fill: #1F3239;
     stroke-width: 2;
     -webkit-transform-origin: bottom;
     -ms-transform-origin: bottom;
@@ -198,6 +201,7 @@ text {
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 	height: 320px;
+	background-color: #293A41;
 	width: 332px;
 	top: 21.5vh;
 	left: 654px
@@ -205,6 +209,22 @@ text {
 #svgArticle:hover {
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
+
+#svgTopView {
+	background-color: #293A41;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  	top: 10px;
+  	height: 320px;
+	left: 654px;
+	transform: translateY(17px);
+	position: element(#svgArticle);
+}
+
+#svgTopView:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
 #gyroAricle2 {
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -214,9 +234,10 @@ text {
 #gyroArticle {
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    height: 20vh;
+    height: 150px;
     width: 20vh;
-    left: 48.6vw;
+    right: 0px;
+    top: 0;
 }
 #gyroArticle:hover {
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -239,17 +260,17 @@ text {
 }
 
 #outerGyroCircle {
-
+	fill: transparent;
+	stroke: #9149A8;
 }
 
 #innerGyroCircle {
-
+	fill: transparent;
 }
 
 #robot-diagram {
-    position: absolute;
     bottom: 1px;
-    right: 19.2px;
+    transform: translate3d(-6%,-30%,0);
 }
 #robot-arm {
 	transition: .3s;
@@ -259,6 +280,7 @@ text {
 }
 #team {
     font-size: 28px;
+    font-family: 'Quicksand' sans-serif;
     letter-spacing: -1px;
 }
 aside {
@@ -276,7 +298,7 @@ aside > * {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0); /* Was background: rgba(0, 0, 0, 0.3); */
 }
 body.login-close > .greybox {
     display: none
@@ -308,21 +330,23 @@ body.login-close #login {
     text-align: center;
 }
 #helpText {
-	transition: 3s;
+	transition: 1s;
 	opacity: 100;
 	text-align: center;
 	color: orange;
 	size: 20px;
+	top: 0px;
+    font-family: 'Quicksand', sans-serif;
 	animation-name: flashing;
-	animation-duration: .5s;
+	animation-duration: 2s;
 	animation-iteration-count: infinite;
 	transition: .5s;
 }
 
 @keyframes flashing {
-	0% {color: white;}
+	0% {color: #17C5DA;}
 	50% {color: #9149A8;}
-	100% {color: white;}
+	100% {color: #17C5DA;}
 }
 
 #ElevatorCarriage {
@@ -331,6 +355,143 @@ body.login-close #login {
 
 #Cube {
 	transition: .3s;
+}
+
+#robotSvgs {
+	color: #1F3239;
+	left: 650px;
+	overflow: hidden;
+	background-color: transparent;
+	transform: translateY(-1.5%);
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+	top: 170px;
+	height: 690px;
+	left: 650px;
+}
+#driveStationData {
+    top: 720px;
+    left: 0px;
+    z-index: 5;
+    width: 640px;
+    height: 20vh;
+    overflow: hidden;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+#driveStationData:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+#bottomSliver {
+    width: 332px;
+    bottom: 0px;
+    height: 53px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    left: 660px;
+}
+#bottomSliver:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Quicksand Regular'), local('Quicksand-Regular'), url(Fonts/NUrn2XQrRfyGZp5MknntaYX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Quicksand Regular'), local('Quicksand-Regular'), url(Fonts/s2PXW4WrV3VLrOUpHiqsfYX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Quicksand Regular'), local('Quicksand-Regular'), url(Fonts/sKd0EMYPAh5PYCRKSryvW5Bw1xU1rKptJj_0jans920.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+}
+
+
+#teamNameText {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Quicksand', sans-serif;
+
+}
+
+/* Guages code */
+
+/*@font-face {
+    font-family:'Roboto';
+    src: url('fonts/fontie-package/Roboto.eot');
+	src: url('fonts/fontie-package/Roboto.eot?#iefix') format('embedded-opentype'),
+		url('fonts/fontie-package/Roboto.woff2') format('woff2'),
+		url('fonts/fontie-package/Roboto.woff') format('woff'),
+		url('fonts/fontie-package/Roboto.svg#Roboto') format('svg');
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    unicode-range: U+0020-2044;
+}*/
+
+
+.gauge {
+	background-color: #293A41;
+	z-index: 1;
+	height: 70px;
+	width: 150px;
+	text-align: center;
+}
+.guageText {
+	font-family: 'Quicksand', sans-serif;
+    z-index: 4;
+    padding-top: 60px;
+    font-size: 15px;
+    animation-duration: .1s;
+    transform: translateY(-276px);
+}
+.innerGuageSvg {
+	transform: translate3d(-10px,-95px,0px);
+}
+.innerCircle {
+	stroke: transparent;
+	fill: #293A41;
+}
+.outerGuageSvg {
+	transition: 1s;
+	z-index: -1;
+	transform: translate3d(-10px,10px,0px) rotate(90deg);
+}
+
+.gaugeCircle {
+	fill: rgb(59,135,193);
+	stroke: transparent;
+	transition: .5s;
+	transform-origin: 100% 40%;
+}
+.percentageText {
+	font-family: 'Quicksand', sans-serif;
+	z-index: 4;
+	padding-top: 60px;
+	font-size: 15px;
+	animation-duration: .1s;
+	transform: translateY(-310px);
+}
+#robot-state {
+    font-family: 'Quicksand', sans-serif;
+}
+
+
+#powerOutput {
+    transform: translate3d(450px,80px,0);
+}
+
+
+@keyframes fadeBack {
+	0% {opacity: 00;}
+	100% {opacity: 100;}
 }
 
 /*

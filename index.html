@@ -3,14 +3,43 @@
 
 <head>
     <meta charset="utf-8">
-    <title>FRC Dashboard</title>
+    <title>FRC 2018 Dashboard</title>
     <link href="css/style.css" rel="stylesheet">
+    <script src="knockout-min.js"></script>
+    <script src="ui.js"></script>
 </head>
 
 <body>
     <!-- Clock that shows up in top left -->
+
     <div id="timer">2:15</div>
+
+    <div class="gauge" id="powerOutput">
+        <svg class="outerGuageSvg" id="powerGauge" width="150px" height="100px">
+            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Power Output</p>
+        <p id="powerOutputPercentage" class="percentageText">50%</p>
+    </div>
+
+
+    <!-- 
+    <div class="gauge" id="powerOutput">
+        <svg class="outerGuageSvg" id="powerGauge" width="150px" height="100px">
+            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Power Output</p>
+        <p id="powerOutputPercentage" class="percentageText">50%</p>
+    </div> -->
+
     <header id="tuner">
+
         <!-- Tells whether robot is connected to dashboard. -->
         <div id="robot-state">Unknown state</div>
         <button id="tuning-button">Tuning</button>
@@ -18,19 +47,13 @@
     <!-- You'll need to mess around with the CSS of #camera (found in css/style.css) to get it to work.
         More explanation in that CSS rule. -->
     
-    <div id="camera">
-        <image onclick="checkCamera()" id="cameraFeed" src="http://192.168.9.91:8080" onerror="this.src='Thomas_Tank_Engine_1.png';"> </image>
-
-        <div id="reloadCameraButton">
-            <button onclick = "checkCamera()" id="reloadCamera">Reload Feed</button>
-        </div>
-    </div>
     
     <div id="tuning" style="display: none;">
         <input id="name" type="text" placeholder="Property">
         <input id="value" type="text" placeholder="Value">
         <button id="set">Set</button>
         <button id="get">Get</button>
+
     </div>
     <!-- The main body of the dashboard, by default contains the gyro monitor and the robot diagram -->
     <div id="gyroArticle">
@@ -47,34 +70,65 @@
         </svg>
     </div>
 
-    <div id="gyroAricle2">
+    <div id="camera">
+        <image onclick="checkCamera()" id="cameraFeed" src="http://192.168.9.91:8080" onerror="this.src='Thomas_Tank_Engine_2.png';"> </image>
+
+        <div id="reloadCameraButton">
+            <button onclick = "checkCamera()" id="reloadCamera">Reload Feed</button>
+        </div>
+    </div>
+
+    <!-- 
+    <div id="gyroAricle2"> -->
         <!-- Gyroscope -->
+        <!--
         <svg id="gyro">
             <circle id="outerGyroCircle" cx="7.6vh" cy="85" r="7.6vh"></circle>
             <circle id="innerGyroCircle" cx="7.6vh" cy="85" r="4.6vh"></circle>
             <rect id="gyro-arm" x="7.6vh" y="5" width="10" height="7.5vh"></rect>
             <text id="`" x="90" y="115">0º</text>
         </svg>
+    </div> -->
+    <div id="robotSvgs">
+        <div id="svgArticle">
+            <!-- Example robot diagram, arm moves when encoder value changes -->
+            <svg id="robot-diagram" width="332" height="450">
+                <!-- <text x="120" y="340">Robot Diagram</text> -->
+                <rect id="Elevator" x="180" y="160" width="10" height="200"></rect>
+
+                <rect id="ElevatorCarriage" x="140" y="210" width="50" height="10"></rect>
+                <rect style="fill:rgb(255,213,46);stroke-width:0;" id="Cube" x="139" y="175" width="34" height="34"></rect>
+
+                <rect x="75" y="360" width="230" height="40"></rect>
+                <rect x="85" y="370" width="210" height="40"></rect>
+                <circle cx="100" cy="410" r="15"></circle>
+                <circle cx="160" cy="410" r="15"></circle>
+                <circle cx="210" cy="410" r="15"></circle>
+                <circle cx="270" cy="410" r="15"></circle>
+
+                <line x1="200" y1="200" x2="225" y2="225" style="stroke:rgb(140,76,169);stroke-width:2" />
+                <circle cx="200" cy="200" r="3" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
+                <line x1="225" y1="225" x2="300" y2="225" style="stroke:rgb(140,76,169);stroke-width:2" />
+                <circle cx="300" cy="225" r="3" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
+                <rect x="60" y="380" width="250" height="30"></rect>
+                <text id="team" x="185" y="405" text-anchor="middle">401</text>
+            </svg>
+        </div>
+
+
+        <div id="svgTopView">
+            <svg id="top-view" width="332" height="450">
+
+            </svg>
+        </div>
+
     </div>
-    <div id="svgArticle">
-        <!-- Example robot diagram, arm moves when encoder value changes -->
-        <svg id="robot-diagram" width="332" height="450">
-            <!-- <text x="120" y="340">Robot Diagram</text> -->
-            <rect id="Elevator" x="180" y="160" width="10" height="200"></rect>
+    <div id="bottomSliver"> 
+        <p id="teamNameText">Team 401</p>
+    </div>
 
-            <rect id="ElevatorCarriage" x="140" y="210" width="50" height="10"></rect>
-            <rect style="fill:rgb(255,213,46);stroke-width:0;" id="Cube" x="139" y="175" width="34" height="34"></rect>
+    <div id="driveStationData">
 
-            <rect x="75" y="360" width="230" height="40"></rect>
-            <rect x="85" y="370" width="210" height="40"></rect>
-            <circle cx="100" cy="410" r="15"></circle>
-            <circle cx="160" cy="410" r="15"></circle>
-            <circle cx="210" cy="410" r="15"></circle>
-            <circle cx="270" cy="410" r="15"></circle>
-
-            <rect x="60" y="380" width="250" height="30"></rect>
-            <text id="team" x="185" y="405" text-anchor="middle">401</text>
-        </svg>
     </div>
     <!-- The sidebar of the dashboard. Designed for smaller control elements like selection boxes and small buttons. -->
     <!--
@@ -115,6 +169,9 @@
             <button onclick="moveGyro(90)">Move Gyro</button>
             <button onclick="beep()">Play Beep</button>
             <button onclick = "checkCamera()" id="reloadCameraMenu">Reload</button>
+            <button onclick="movePowerGauge(0)">Guage</button>
+            <button onclick="movePowerGauge(100)">Guage2</button>
+            <button onclick="movePowerGauge(60)">Guage3</button>
             <button onclick="moveElevator(100)">UP</button>
             <button onclick="moveElevator(50)">MID</button>
             <button onclick="moveElevator(0)">DOWN</button>
@@ -124,7 +181,6 @@
 
     <script src="tryIPC.js"></script>
     <script src="networktables/networktables.js"></script>
-    <script src="ui.js"></script>
 </body>
 
 </html>
