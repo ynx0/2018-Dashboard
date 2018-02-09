@@ -9,7 +9,7 @@
     <script src="ui.js"></script>
 </head>
 
-<body>
+<body onresize="showTeamName()">
     <!-- Clock that shows up in top left -->
 
     <div id="timer">2:15</div>
@@ -25,7 +25,34 @@
         <p id="powerOutputPercentage" class="percentageText">50%</p>
     </div>
 
+    <div class="gauge" id="gauge2">
+        <svg class="outerGuageSvg" id="gauge2-2" width="150px" height="100px">
+            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Power Output</p>
+        <p id="powerOutputPercentage" class="percentageText">50%</p>
+    </div>
 
+    <div class="gauge" id="gauge3">
+        <svg class="outerGuageSvg" id="gauge3-3" width="150px" height="100px">
+            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Power Output</p>
+        <p id="powerOutputPercentage" class="percentageText">50%</p>
+    </div>
+
+    <div class="squareGauge" id="percentageLeft">
+        <svg class="squareGaugeSVG">
+            <rect id = "leftPowerGauge" class="squareGaugeBar" x="0" y="100" width="30" height="0"/>
+            <p id = "leftPowerGaugePercentage" class="squareGaugePercentage">0%</p>
+        </svg>
+    </div>
     <!-- 
     <div class="gauge" id="powerOutput">
         <svg class="outerGuageSvg" id="powerGauge" width="150px" height="100px">
@@ -89,6 +116,7 @@
             <text id="`" x="90" y="115">0º</text>
         </svg>
     </div> -->
+
     <div id="robotSvgs">
         <div id="svgArticle">
             <!-- Example robot diagram, arm moves when encoder value changes -->
@@ -117,8 +145,70 @@
 
 
         <div id="svgTopView">
-            <svg id="top-view" width="332" height="450">
+            <svg id="top-view" width="332" height="320">
+                <!-- Perimeter -->
+                    <!-- Top -->
+                    <line x1="246" y1="20" x2="266" y2="40" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="86" y1="20" x2="66" y2="40" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="86" y1="20" x2="246" y2="20" style="stroke:rgb(255,255,255);stroke-width:2" />
 
+                    <!-- Sides -->
+                    <line x1="66" y1="40" x2="66" y2="280" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="266" y1="40" x2="266" y2="280" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                    <!-- Bottom -->
+
+                    <line x1="66" y1="280" x2="86" y2="300" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="86" y1="300" x2="246" y2="300" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="246" y1="300" x2="266" y2="280" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                <!-- Corners -->
+                    <!-- Running Horizontal -->
+                    <line x1="266" y1="40" x2="66" y2="40" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="266" y1="280" x2="66" y2="280" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <!-- Running Vertical -->
+                        <!-- Left Side -->
+                            <!-- 160px center -->
+
+                            <line x1="86" y1="20" x2="86" y2="90" style="stroke:rgb(255,255,255);stroke-width:2" />
+                            <line x1="86" y1="230" x2="86" y2="300" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                            <line x1="66" y1="90" x2="106" y2="90" style="stroke:rgb(255,255,255);stroke-width:2" />
+                            <line x1="66" y1="230" x2="106" y2="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                            <line x1="106" y1="230" x2="106" y2="90" style="stroke:rgb(255,255,255);stroke-width:2" />
+                        <!-- Right Side -->
+                            <line x1="246" y1="230" x2="246" y2="300" style="stroke:rgb(255,255,255);stroke-width:2" />
+                            <line x1="246" y1="20" x2="246" y2="90" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                            <line x1="226" y1="90" x2="266" y2="90" style="stroke:rgb(255,255,255);stroke-width:2" />
+                            <line x1="226" y1="230" x2="266" y2="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                            <line x1="226" y1="90" x2="226" y2="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+
+                <!-- Diagonal Lines -->
+                    <!-- Left Side -->
+                        <line x1="105" y1="110" x2="86" y2="91" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <line x1="105" y1="229" x2="67" y2="190" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="105" y1="205" x2="67" y2="165" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="105" y1="180" x2="67" y2="140" style="stroke:rgb(140,76,169);stroke-width:2" /> 
+                        <line x1="105" y1="155" x2="67" y2="115" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="105" y1="130" x2="67" y2="91" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="85" y1="229" x2="67" y2="211" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                    <!-- Right Side -->
+
+                        <line x1="265" y1="110" x2="246" y2="91" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <line x1="265" y1="229" x2="227" y2="190" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="265" y1="205" x2="227" y2="165" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="265" y1="180" x2="227" y2="140" style="stroke:rgb(140,76,169);stroke-width:2" /> 
+                        <line x1="265" y1="155" x2="227" y2="115" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="265" y1="130" x2="227" y2="91" style="stroke:rgb(140,76,169);stroke-width:2" />
+                        <line x1="245" y1="229" x2="227" y2="211" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                <!-- Arrows -->
+                        <line x1="45" y1="110" x2="60" y2="125" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <line x1="45" y1="110" x2="60" y2="125" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <circle cx="60" cy="125" r="2" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
+                        <circle cx="46" cy="111" r="2" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
             </svg>
         </div>
 
@@ -169,6 +259,13 @@
             <button onclick="moveGyro(90)">Move Gyro</button>
             <button onclick="beep()">Play Beep</button>
             <button onclick = "checkCamera()" id="reloadCameraMenu">Reload</button>
+
+            <button onclick="moveLeftPowerGauge(0)">Bar Gauge</button>
+            <button onclick="moveLeftPowerGauge(-100)">Bar Gauge2</button>
+            <button onclick="moveLeftPowerGauge(-60)">Bar Gauge3</button>
+            <button onclick="moveLeftPowerGauge(100)">Bar Gauge3</button>
+            <button onclick="moveLeftPowerGauge(70)">Bar Gauge3</button>
+
             <button onclick="movePowerGauge(0)">Guage</button>
             <button onclick="movePowerGauge(100)">Guage2</button>
             <button onclick="movePowerGauge(60)">Guage3</button>
@@ -178,7 +275,6 @@
             
         </div>
     </div>
-
     <script src="tryIPC.js"></script>
     <script src="networktables/networktables.js"></script>
 </body>

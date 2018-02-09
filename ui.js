@@ -107,7 +107,70 @@ function collectedCube(collected) {
         cube.style.x= 50;
     }
 }
+function showTeamName() {
+    var h = window.innerHeight;
+    element = document.getElementById("bottomSliver");
+    if (h !== 900) {
+        element.style.opacity = "0";
+    }
+    else {
+        element.style.opacity = "100";
+    }
+}
 
+function moveLeftPowerGauge(value) {
+    bar = document.getElementById("leftPowerGauge");
+    //<rect id = "leftPowerGauge" class="squareGaugeBar" x="0" y="100" width="30" height="1"/>
+    text = document.getElementById("leftPowerGaugePercentage");
+    colorValue = Math.abs(value);
+    if (value<=0) {
+        bar.setAttribute("y", 100);
+        if (value < -100) {
+            value == -100;
+        }
+        if (value === -100) {
+            runAnimation(bar, "maxed");
+        }
+        if (value !== 0) {
+            text.style.transform = "translate3d(-9px, -131.5px, 0px)";
+        }
+        else {
+            text.style.transform = "translate3d(-9px, -121.5px, 0px)";
+        }
+        //Element 201 px total, goes up and down by 100
+        changeValue = value + "%";
+
+        if (changeValue === text.innerHTML) {
+        }
+        else {
+            runAnimation(leftPowerGaugePercentage,"fadeBack");
+            text.innerHTML = changeValue;
+        }
+
+        value = (value) * -1;
+        bar.setAttribute("height", value+"px");
+    }
+    else {
+        if (value > 100) {
+            value == 100;
+        }
+        text.style.transform = "translate3d(-9px, -111.5px, 0px)";
+        changeValue = value + "%";
+        if (changeValue === text.innerHTML) {
+        }
+        else {
+            runAnimation(leftPowerGaugePercentage,"fadeBack");
+            text.innerHTML = changeValue;
+        }
+
+        if (value === 100) {
+            runAnimation(bar, "maxed");
+        }
+
+        bar.setAttribute("height", (value)+"px");
+        bar.setAttribute("y", (100-value) + "px");
+    }
+}
 function movePowerGauge(value) {
     console.log("---");
     value = parseFloat(value); //50 //40
