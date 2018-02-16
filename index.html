@@ -7,15 +7,22 @@
     <link href="css/style.css" rel="stylesheet">
     <script src="knockout-min.js"></script>
     <script src="ui.js"></script>
+    <script src="sensorPage.js"></script>
+    <script src="gauges.js"></script>
 </head>
 
 <body onresize="showTeamName()">
     <!-- Clock that shows up in top left -->
-
+    <div id="sensorpage">
+        <button id="mainPageButton" onclick="sensorPage(false)">Main Page</button>
+    </div>
     <div id="timer">2:15</div>
+
+
 
     <div class="gauge" id="powerOutput">
         <svg class="outerGuageSvg" id="powerGauge" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
             <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
         </svg>
         <svg class="innerGuageSvg" width="150px" height="100px"> 
@@ -25,8 +32,11 @@
         <p id="powerOutputPercentage" class="percentageText">50%</p>
     </div>
 
+
+
     <div class="gauge" id="gauge2">
         <svg class="outerGuageSvg" id="gauge2-2" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
             <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
         </svg>
         <svg class="innerGuageSvg" width="150px" height="100px"> 
@@ -38,6 +48,7 @@
 
     <div class="gauge" id="gauge3">
         <svg class="outerGuageSvg" id="gauge3-3" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
             <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
         </svg>
         <svg class="innerGuageSvg" width="150px" height="100px"> 
@@ -47,10 +58,31 @@
         <p id="powerOutputPercentage" class="percentageText">50%</p>
     </div>
 
+    <div class="gauge" id="carraigeMotorGauge">
+        <svg class="outerGuageSvg" id="carraigeMotorGaugeSVG" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
+            <path class = "gaugeCircle" id="carraigeMotorGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Carriage Motor</p>
+        <p id="carraigeMotorGaugeText" class="percentageText">50%</p>
+    </div>
+
     <div class="squareGauge" id="percentageLeft">
         <svg class="squareGaugeSVG">
-            <rect id = "leftPowerGauge" class="squareGaugeBar" x="0" y="100" width="30" height="0"/>
+            <!-- <line x1="0" y1="100" x2="130" y2="100" style="stroke:rgb(255,255,255);stroke-width:1" /> -->
+            <rect id = "leftPowerGauge" class="squareGaugeBar" rx="1" x="0" y="100" width="30" height="0"/>
             <p id = "leftPowerGaugePercentage" class="squareGaugePercentage">0%</p>
+        </svg>
+    </div>
+
+    <div class="squareGauge" id="percentageRight">
+        <svg class="squareGaugeSVG">
+            <!-- <line x1="0" y1="100" x2="130" y2="100" style="stroke:rgb(255,255,255);stroke-width:1" /> -->
+            <rect id = "rightPowerGauge" class="squareGaugeBar" rx="1" x="0" y="100" width="30" height="0"/>
+            <p id = "rightPowerGaugePercentage" class="squareGaugePercentage">0%</p>
         </svg>
     </div>
     <!-- 
@@ -70,6 +102,7 @@
         <!-- Tells whether robot is connected to dashboard. -->
         <div id="robot-state">Unknown state</div>
         <button id="tuning-button">Tuning</button>
+        <button id="sensorDataButton" onclick="sensorPage(true)">Sensor Data</button>
     </header>
     <!-- You'll need to mess around with the CSS of #camera (found in css/style.css) to get it to work.
         More explanation in that CSS rule. -->
@@ -122,24 +155,24 @@
             <!-- Example robot diagram, arm moves when encoder value changes -->
             <svg id="robot-diagram" width="332" height="450">
                 <!-- <text x="120" y="340">Robot Diagram</text> -->
-                <rect id="Elevator" x="180" y="160" width="10" height="200"></rect>
+                <rect id="Elevator" x="180" y="150" width="10" height="220"></rect>
 
                 <rect id="ElevatorCarriage" x="140" y="210" width="50" height="10"></rect>
                 <rect style="fill:rgb(255,213,46);stroke-width:0;" id="Cube" x="139" y="175" width="34" height="34"></rect>
 
-                <rect x="75" y="360" width="230" height="40"></rect>
+                <!-- <rect x="75" y="360" width="230" height="40"></rect> -->
                 <rect x="85" y="370" width="210" height="40"></rect>
                 <circle cx="100" cy="410" r="15"></circle>
                 <circle cx="160" cy="410" r="15"></circle>
                 <circle cx="210" cy="410" r="15"></circle>
                 <circle cx="270" cy="410" r="15"></circle>
 
-                <line x1="200" y1="200" x2="225" y2="225" style="stroke:rgb(140,76,169);stroke-width:2" />
-                <circle cx="200" cy="200" r="3" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
-                <line x1="225" y1="225" x2="300" y2="225" style="stroke:rgb(140,76,169);stroke-width:2" />
-                <circle cx="300" cy="225" r="3" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
+                <!-- <line x1="202" y1="348" x2="217" y2="333" style="stroke:rgb(140,76,169);stroke-width:1"/>
+                <line x1="217" y1="333" x2="237" y2="333" style="stroke:rgb(140,76,169);stroke-width:1"/>
+                <line x1="237" y1="333" x2="247" y2="323" style="stroke:rgb(140,76,169);stroke-width:1"/>
+                <circle cx="200" cy="350" r="3" style="fill:transparent;stroke-width:1; stroke:rgb(140,76,169);"></circle> -->
                 <rect x="60" y="380" width="250" height="30"></rect>
-                <text id="team" x="185" y="405" text-anchor="middle">401</text>
+                <text id="team" x="185" y="405" text-anchor="middle"></text>
             </svg>
         </div>
 
@@ -185,30 +218,53 @@
                             <line x1="226" y1="230" x2="266" y2="230" style="stroke:rgb(255,255,255);stroke-width:2" />
 
                             <line x1="226" y1="90" x2="226" y2="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+                <!-- Center Detail --><!-- 
+                    <line x2="126" y2="270" x1="116" y1="270" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x2="206" y2="270" x1="216" y1="270" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x1="216" y1="270" x2="216" y2="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x2="206" y2="230" x1="216" y1="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x2="126" y2="230" x1="116" y1="230" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x2="126" y2="230" x1="126" y1="270" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x2="116" y2="230" x1="116" y1="270" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line x2="206" y2="230" x1="206" y1="270" style="stroke:rgb(255,255,255);stroke-width:2" /> -->
 
+
+
+
+                <line x1="86" y1="20" x2="86" y2="90" style="stroke:rgb(255,255,255);stroke-width:2" />
                 <!-- Diagonal Lines -->
                     <!-- Left Side -->
-                        <line x1="105" y1="110" x2="86" y2="91" style="stroke:rgb(140,76,169);stroke-width:2"/>
-                        <line x1="105" y1="229" x2="67" y2="190" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="105" y1="205" x2="67" y2="165" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="105" y1="180" x2="67" y2="140" style="stroke:rgb(140,76,169);stroke-width:2" /> 
-                        <line x1="105" y1="155" x2="67" y2="115" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="105" y1="130" x2="67" y2="91" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="85" y1="229" x2="67" y2="211" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <line x1="105" y1="110" x2="86" y2="91" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                        <line x1="105" y1="229" x2="67" y2="190" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="105" y1="205" x2="67" y2="165" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="105" y1="180" x2="67" y2="140" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" /> 
+                        <line x1="105" y1="155" x2="67" y2="115" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="105" y1="130" x2="67" y2="91" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="85" y1="229" x2="67" y2="211" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                        <!-- Connecting Lines -->
+                            <line x1="25" y1="269" x2="35" y2="279" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                            <line x1="35" y1="279" x2="55" y2="279" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                            <line x1="55" y1="279" x2="78" y2="240" class="leftDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                            <circle cx="78" cy="240" r="3" class="leftDiagonalLines" style="fill:transparent;stroke-width:0; stroke:transparent;stroke-width:0; "></circle>
                     <!-- Right Side -->
 
-                        <line x1="265" y1="110" x2="246" y2="91" style="stroke:rgb(140,76,169);stroke-width:2"/>
-                        <line x1="265" y1="229" x2="227" y2="190" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="265" y1="205" x2="227" y2="165" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="265" y1="180" x2="227" y2="140" style="stroke:rgb(140,76,169);stroke-width:2" /> 
-                        <line x1="265" y1="155" x2="227" y2="115" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="265" y1="130" x2="227" y2="91" style="stroke:rgb(140,76,169);stroke-width:2" />
-                        <line x1="245" y1="229" x2="227" y2="211" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <line x1="265" y1="110" x2="246" y2="91" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                        <line x1="265" y1="229" x2="227" y2="190" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="265" y1="205" x2="227" y2="165" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="265" y1="180" x2="227" y2="140" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" /> 
+                        <line x1="265" y1="155" x2="227" y2="115" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="265" y1="130" x2="227" y2="91" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0" />
+                        <line x1="245" y1="229" x2="227" y2="211" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                        <!-- Connecting Lines -->
+                            <line x1="307" y1="269" x2="297" y2="279" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                            <line x1="297" y1="279" x2="277" y2="279" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                            <line x1="277" y1="279" x2="254" y2="240" class="rightDiagonalLines" style="stroke:rgb(140,76,169);stroke-width:0"/>
+                            <circle cx="254" cy="240" r="3" class="rightDiagonalLines" style="fill:transparent;stroke-width:0; stroke:transparent;stroke-width:0; "></circle>
                 <!-- Arrows -->
-                        <line x1="45" y1="110" x2="60" y2="125" style="stroke:rgb(140,76,169);stroke-width:2"/>
+                        <!-- 
                         <line x1="45" y1="110" x2="60" y2="125" style="stroke:rgb(140,76,169);stroke-width:2"/>
                         <circle cx="60" cy="125" r="2" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
-                        <circle cx="46" cy="111" r="2" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle>
+                        <circle cx="46" cy="111" r="2" style="fill:rgb(140,76,169);stroke-width:2; stroke:rgb(140,76,169);stroke-width:2; "></circle> -->
             </svg>
         </div>
 
@@ -249,31 +305,32 @@
         </div>
         -->
     <!-- </aside> -->
-    <p id="helpText">Dashboard will connect automatically when robot is found</p>
-    <div class="greybox">
-        <div id="login">
-            <input id="connect-address" type="text" value="10.4.1.2" disabled>
-            <button id="connect" disabled>Connecting</button>
-            <button onclick="collectedCube(true)">Get Cube</button>
-            <button onclick="collectedCube(false)">Drop Cube</button>
-            <button onclick="moveGyro(90)">Move Gyro</button>
-            <button onclick="beep()">Play Beep</button>
-            <button onclick = "checkCamera()" id="reloadCameraMenu">Reload</button>
-
-            <button onclick="moveLeftPowerGauge(0)">Bar Gauge</button>
-            <button onclick="moveLeftPowerGauge(-100)">Bar Gauge2</button>
-            <button onclick="moveLeftPowerGauge(-60)">Bar Gauge3</button>
-            <button onclick="moveLeftPowerGauge(100)">Bar Gauge3</button>
-            <button onclick="moveLeftPowerGauge(70)">Bar Gauge3</button>
-
-            <button onclick="movePowerGauge(0)">Guage</button>
-            <button onclick="movePowerGauge(100)">Guage2</button>
-            <button onclick="movePowerGauge(60)">Guage3</button>
-            <button onclick="moveElevator(100)">UP</button>
-            <button onclick="moveElevator(50)">MID</button>
-            <button onclick="moveElevator(0)">DOWN</button>
-            
+    <p id="helpText">Dashboard will connect automatically if robot is found</p>
+    <div id="login">
+        <div class="slidecontainer"> Move Left Power Gauge
+            <input type="range" min="-100" max="100" value="50" class= "slider" onchange="moveLeftMotorGauge(this.value)">
         </div>
+        <div class="slidecontainer"> Move Right Power Gauge
+            <input type="range" min="-100" max="100" value="50" class= "slider" onchange="moveRightMotorGauge(this.value)">
+        </div>
+
+        <div class="slidecontainer"> Move Gauge
+            <input type="range" min="0" max="100" value="50" class= "slider" onchange="movePowerGauge(this.value)">
+        </div>
+
+        <div class="slidecontainer"> Change Height
+            <input type="range" min="-1" max="100" value="50" class= "slider" onchange="moveElevator(this.value)">
+        </div>
+        <input id="connect-address" type="text" value="10.4.1.2" disabled>
+        <button id="connect" disabled>Connecting</button>
+        <button onclick="collectedCube(true)">Get Cube</button>
+        <button onclick="collectedCube(false)">Drop Cube</button>
+        <button onclick="moveGyro(90)">Move Gyro</button>
+        <button onclick="beep()">Play Beep</button>
+        <button onclick = "checkCamera()" id="reloadCameraMenu">Reload</button>
+        <button onclick="moveLeftMotorGauge(0); moveRightMotorGauge(0);">Bar Gauge to 0</button>
+        <button onclick="tiltRobot(2)">Tilt Robot</button>
+        <button onclick="sensorPage(true)">Sensor Page</button>
     </div>
     <script src="tryIPC.js"></script>
     <script src="networktables/networktables.js"></script>

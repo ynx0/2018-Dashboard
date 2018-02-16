@@ -15,7 +15,7 @@ Colors:
     display: none;
 }
 body {
-	transition: .3s;
+	transition: 1s cubic-bezier(.8,.01,.71,.99);
     font: 16px sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -85,8 +85,37 @@ body > * {
     line-height: .8;
 }
 #timer:hover {
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
+
+
+
+
+
+
+#sensorpage {
+    left: 20px;
+    top: 20px;
+    transform: translate3d(-1440px,0px,0px);
+    width: 1400px;
+    height: 860px;
+    background: #293A41; 
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+#sensorpage:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+#mainPageButton {
+    transform: translateX(1295px);
+}
+
+
+
+
+
+
+
 header {
     width: 20vw;
     height: 20vh;
@@ -162,6 +191,10 @@ header {
     width: 50vw;
     height: 80vh;
     bottom: 0;
+}
+#sensorDataButton {
+    width: 100px;
+    height: 34px;
 }
 #tuning div {
     margin: 20px 0;
@@ -262,7 +295,9 @@ text {
 
 #robot-diagram {
     bottom: 1px;
+    transform-origin: 50% 423px;
     transform: translate3d(-6%,-30%,0);
+    transition: .2s;
 }
 #robot-arm {
 	transition: .3s;
@@ -284,18 +319,11 @@ aside {
 aside > * {
     margin-bottom: 20px;
 }
-.greybox {
-    position: fixed;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0); /* Was background: rgba(0, 0, 0, 0.3); */
-}
 body.login-close > .greybox {
     display: none
 }
 #login {
+    transform: translate3d(1100px,-400px,0px);
     text-align: center;
     display: block;
     margin: 14em auto 0 auto;
@@ -342,11 +370,11 @@ body.login-close #login {
 }
 
 #ElevatorCarriage {
-	transition: .3s;
+	transition: 1s cubic-bezier(0,.99,.3,1.01);
 }
 
 #Cube {
-	transition: .3s;
+	transition: 1s cubic-bezier(0,.99,.3,1.01);
 }
 
 #robotSvgs {
@@ -366,23 +394,24 @@ body.login-close #login {
     z-index: 5;
     width: 640px;
     height: 20vh;
+    transition: 1s cubic-bezier(0,.99,.3,1.01);
     overflow: hidden;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 #driveStationData:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 #bottomSliver {
     width: 332px;
-    bottom: 0px;
+    transform: translateY(316px);
     height: 53px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     left: 660px;
 }
 #bottomSliver:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
-
 
 @font-face {
   font-family: 'Quicksand';
@@ -415,6 +444,13 @@ body.login-close #login {
 
 }
 
+.leftDiagonalLines {
+    transition: 1s;  /*cubic-bezier(0,.99,.3,1.01)*/
+}
+
+.rightDiagonalLines {
+    transition: 1s; /*cubic-bezier(0,.99,.3,1.01)*/
+}
 /* Guages code */
 
 /*@font-face {
@@ -473,6 +509,10 @@ body.login-close #login {
 	animation-duration: .1s;
 	transform: translateY(-310px);
 }
+.backgroundGaugeCircle {
+    fill: #192A31;
+    stroke: transparent;
+}
 #robot-state {
     font-family: 'Quicksand', sans-serif;
 }
@@ -496,6 +536,7 @@ body.login-close #login {
 
 
 .squareGauge {
+    transition: 5s;
     border-radius: 2px;
     height: 201px;
     width: 30px;
@@ -510,7 +551,8 @@ body.login-close #login {
 }
 .squareGaugeBar {
     animation-duration: 1s;
-    transition: .1s cubic-bezier(0,.99,.3,1.01);
+    animation-iteration-count: infinite;
+    transition: 1s cubic-bezier(0,.99,.3,1.01);
     fill: #17C5DA;
     stroke: transparent;
 }
@@ -529,6 +571,15 @@ body.login-close #login {
 #percentageLeft {
     z-index: 1;
     transform: translate3d(670px,570px,0px);
+}
+#percentageRight {
+    z-index: 1;
+    transform: translate3d(951px,570px,0px);
+}
+#carraigeMotorGauge {
+    z-index: 1;
+    background-color: #293A41;
+    transform: translate3d(840px, 80px,0);
 }
 @keyframes maxed {
     25% {fill: rgb(255,0,0);}

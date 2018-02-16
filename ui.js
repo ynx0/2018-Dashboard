@@ -85,22 +85,21 @@ element.addEventListener("click", function(e){
 }, false);
 */
 
-function runAnimation(element, name) {
-    console.log('Ran animation');
-    element.style.animationName = null;
-    element.offsetHeight; /* trigger reflow */
-    element.style.animationName = name;
-}
 
 function collectedCube(collected) {
     var cube = document.getElementById("Cube");
     var cameraBackground = document.getElementById("camera");
     if (collected === true) {
+        var x = cube.style.x
+        if (x === "139") {
+        }
+        else {
+            runAnimation(cameraBackground, "flash");
+            player.play('Beep.wav', function(err){})
+        }
         cube.style.opacity = 100;
         cube.style.x = 139;
         //'#333 to #FFD52E';
-        runAnimation(cameraBackground, "flash");
-        player.play('Beep.wav', function(err){})
     }
     else if (collected === false) {
         cube.style.opacity = 0;
@@ -116,109 +115,6 @@ function showTeamName() {
     else {
         element.style.opacity = "100";
     }
-}
-
-function moveLeftPowerGauge(value) {
-    bar = document.getElementById("leftPowerGauge");
-    //<rect id = "leftPowerGauge" class="squareGaugeBar" x="0" y="100" width="30" height="1"/>
-    text = document.getElementById("leftPowerGaugePercentage");
-    colorValue = Math.abs(value);
-    if (value<=0) {
-        bar.setAttribute("y", 100);
-        if (value < -100) {
-            value == -100;
-        }
-        if (value === -100) {
-            runAnimation(bar, "maxed");
-        }
-        if (value !== 0) {
-            text.style.transform = "translate3d(-9px, -131.5px, 0px)";
-        }
-        else {
-            text.style.transform = "translate3d(-9px, -121.5px, 0px)";
-        }
-        //Element 201 px total, goes up and down by 100
-        changeValue = value + "%";
-
-        if (changeValue === text.innerHTML) {
-        }
-        else {
-            runAnimation(leftPowerGaugePercentage,"fadeBack");
-            text.innerHTML = changeValue;
-        }
-
-        value = (value) * -1;
-        bar.setAttribute("height", value+"px");
-    }
-    else {
-        if (value > 100) {
-            value == 100;
-        }
-        text.style.transform = "translate3d(-9px, -111.5px, 0px)";
-        changeValue = value + "%";
-        if (changeValue === text.innerHTML) {
-        }
-        else {
-            runAnimation(leftPowerGaugePercentage,"fadeBack");
-            text.innerHTML = changeValue;
-        }
-
-        if (value === 100) {
-            runAnimation(bar, "maxed");
-        }
-
-        bar.setAttribute("height", (value)+"px");
-        bar.setAttribute("y", (100-value) + "px");
-    }
-}
-function movePowerGauge(value) {
-    console.log("---");
-    value = parseFloat(value); //50 //40
-    console.log("Current float rotation amount: " + value + "%");
-    var element = document.getElementById("powerGauge");
-    var gauge = document.getElementById("powerGaugeCircle");
-    var guagePercentageText = document.getElementById("powerOutputPercentage");
-    var currentRotation = element.style.transform;
-    currentRotation = currentRotation.substring(37,currentRotation.length-3);
-    currentRotation = String(currentRotation);
-    try {
-        currentRotation = parseFloat(currentRotation);
-    }
-    catch (error) {
-        console.log(error);
-        try {
-            currentRotation = currentRotation.substring(0,currentRotation.length-1);
-            currentRotation = parseFloat(currentRotation);
-        }
-        catch (error) {
-            console.log(error);
-            currentRotation = currentRotation.substring(0,currentRotaiton.length-1);
-            currentRotation = parseFloat(currentRotation);
-        }
-    }
-    
-    currentRotation = 100*(currentRotation/180);
-
-    console.log("The previous rotation was " + currentRotation + "%");
-    if (value > currentRotation && isNaN(currentRotation) === false) {
-        element.style.animationDirection = "normal";
-        console.log("ran, comparing " + value + " and " + currentRotation);
-    }
-    else if (isNaN(currentRotation) === false) {
-        element.style.animationDirection = "reverse";
-        console.log("ran2, comparing " + value + " and " + currentRotation);
-    }
-    // element.style.animationDelay = (value/100) * -1;
-    if (currentRotation != value) {
-        runAnimation(guagePercentageText,"fadeBack");
-    }
-    changeAmountDegrees = (value/100) * 180; //.5*180=90 //.4*180
-    console.log("Value is " + value);
-
-    guagePercentageText.innerHTML = value + "%"
-    gauge.style.fill = "rgb(" + parseInt((((value/100) * 72) + 23)) + "," + parseInt((((value/100) * -124) + 197)) + "," + parseInt((((value/100) * -50) + 218)) + ")";
-    element.style.transform = "translate3d(-10px,10px,0px) rotate(" + changeAmountDegrees + "deg)";
-    currentRotation = value;
 }
 
 function sleep(milliseconds) {
@@ -484,6 +380,23 @@ function onValueChanged(key, value, isNew) {
         }
     }
 }
+function sensorPage(value) {
+    var body = document.body;
+    var teamName = document.getElementById("bottomSliver");
+    if (value == true) {
+        teamName.style.transform = "translateY(0px);";
+        body.style.transform = "translate3d(" + window.innerWidth + "px,0px,0px)"
+    }
+    else {
+        teamName.style.transform = "translateY(316px)";
+        body.style.transform = "translate3d(0px,0px,0px)"
+    }
+}
+
+function tiltRobot(value) {
+    var robot = document.getElementById("robot-diagram");
+    robot.style.transform = "translate3d(-6%,-30%,0) rotate(" + value + "deg)";
+}
 
 // The rest of the doc is listeners for UI elements being clicked on
 ui.example.button.onclick = function () {
@@ -524,4 +437,11 @@ ui.autoSelect.onchange = function () {
 ui.armPosition.oninput = function () {
     NetworkTables.putValue('/SmartDashboard/arm/encoder', parseInt(this.value));
 };
+
+function runAnimation(element, name) {
+    console.log('Ran animation ' + name);
+    element.style.animationName = null;
+    element.offsetHeight; /* trigger reflow */
+    element.style.animationName = name;
+}
 
