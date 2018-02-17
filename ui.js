@@ -444,4 +444,3 @@ function runAnimation(element, name) {
     element.offsetHeight; /* trigger reflow */
     element.style.animationName = name;
 }
-

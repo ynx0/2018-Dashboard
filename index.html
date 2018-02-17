@@ -9,17 +9,123 @@
     <script src="ui.js"></script>
     <script src="sensorPage.js"></script>
     <script src="gauges.js"></script>
-</head>
+    <script src="sensorPageListeners.js"></script>
+    <script src="node_modules/textfit/textFit.js"></script>
+
+<!--     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+ -->
+    <link rel="stylesheet" href="fontawesome/web-fonts-with-css/css/fontawesome-all.css"></link>
+    </head>
 
 <body onresize="showTeamName()">
     <!-- Clock that shows up in top left -->
     <div id="sensorpage">
-        <button id="mainPageButton" onclick="sensorPage(false)">Main Page</button>
+        <div id="powerStats" class="card"> 
+            <p class="title">Power</p>
+
+            <div class="numberReadoutParent" id="numberReadoutParentTotalAmps">
+                <p class="numberReadoutName">Current Draw</p>
+                <div class="numberReadout" id="numberReadoutTotalAmps">
+                    <p class="numberReadoutValue" id="numberReadoutValueTotalAmps"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="driveTrain" class="card">
+            <p class="title">Drive Train</p>
+            <div class="compass" id="compassTest">
+
+            </div>
+            <div class="level" id="levelYaw">
+
+            </div>
+            <div id="arrowTransformDriveShift" class="arrowDiv">
+                <p class="arrowTitle">Drive Shift</p>
+                <div class="arrow" id="arrowDriveShift">             
+                    <i class="fa fa-caret-up" id="arrowUpDriveShift"></i>
+                </div>
+            </div>
+
+            <div class="numberReadoutParent" id="numberReadoutParentCurrentLeft">
+                <p class="numberReadoutName">Current Left</p>
+                <div class="numberReadout" id="numberReadoutCurrentLeft">
+                    <p class="numberReadoutValue" id="numberReadoutValueCurrentLeft"></p>
+                </div>
+            </div>
+
+            <div class="numberReadoutParent" id="numberReadoutParentCurrentRight">
+                <p class="numberReadoutName">Current Right</p>
+                <div class="numberReadout" id="numberReadoutCurrentRight">
+                    <p class="numberReadoutValue" id="numberReadoutValueCurrentRight"></p>
+                </div>
+            </div>
+        </div>
+<!-- 
+        <div class="switch" id="switchTest">
+            <div id="switchGreenTest" class="switchGreen"> </div>
+            <div id="switchRedTest" class="switchRed"> </div>
+        </div>
+
+        <div id="arrowTransform" class="arrowDiv">
+            <div class="arrow" id="arrowTest">             
+                <i class="fa fa-caret-up" id="arrowUpTest"></i>
+            </div>
+        </div>
+        <div id="lockDivTest" class="lock">
+            <i id="lockTest" class="fa fa-lock lockClass"></i>
+        </div>
+        <button onclick="changeNumber(350,0,200,'TotalAmps', 'A')">Number Readout</button>
+        <button  onclick="changeSwitch(false,'Test',true)">False</button>
+        <button onclick="changeCircle(11.5,'Voltage',0,15,false)">Turn gauge</button>
+        <button onclick="changeArrow(true, 'Test')">Turn On Arrow</button>
+        <button onclick="changeLock('unlocked','Test')">Unlock</button> -->
     </div>
+    <button id="mainPageButton" onclick="sensorPage(false)">Main Page</button>
+
+    <div class="gauge" id="gaugeVoltage">
+        <svg class="outerGuageSvg" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeVoltage" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Voltage</p>
+        <p id="circleGaugeTextVoltage" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitVoltage">0</p>
+        <p class="endLimit" id="endLimitVoltage">0</p>
+    </div>
+    <!-- DRIVETRAIN GAUGES -->
+    <div class="gauge" id="gaugeLeftVelocity">
+        <svg class="outerGuageSvg" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeLeftVelocity" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Left Velocity</p>
+        <p id="circleGaugeTextLeftVelocity" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitLeftVelocity">0</p>
+        <p class="endLimit" id="endLimitLeftVelocity">0</p>
+    </div>
+
+    <div class="gauge" id="gaugeRightVelocity">
+        <svg class="outerGuageSvg" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeRightVelocity" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Right Velocity</p>
+        <p id="circleGaugeTextRightVelocity" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitRightVelocity">0</p>
+        <p class="endLimit" id="endLimitRightVelocity">0</p>
+    </div>
+
+
     <div id="timer">2:15</div>
-
-
-
     <div class="gauge" id="powerOutput">
         <svg class="outerGuageSvg" id="powerGauge" width="150px" height="100px">
             <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
