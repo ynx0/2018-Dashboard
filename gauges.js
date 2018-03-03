@@ -72,7 +72,6 @@ function moveLeftMotorGauge(value) {
         }
         bar.setAttribute("height", (value)+"px");
         bar.setAttribute("y", (100-value) + "px");
-
     }
 }
 

@@ -63,11 +63,13 @@ function changeNumber(value,limitLow,limitHigh, displayAs,unit) {
 	var element = document.getElementById("numberReadout" + displayAs);
 	text.innerHTML = value + unit;
 	textFit(element,{alignVert: true, alignHoriz: true});
-	if (limitHigh != 0 && value > limitHigh) {
-		element.style.background = "rgb(255,0,0)";
-	}
-	else if (limitLow != 0 && value < limitLow) {
-		element.style.background = "rgb(255,0,0)";
+	if (limitLow != 0 && limitHigh != 0) {
+		if (value > limitHigh) {
+			element.style.background = "rgb(255,0,0)";
+		}
+		else if (value < limitLow) {
+			element.style.background = "rgb(255,0,0)";
+		}
 	}
 }
 //Change arrow direction (boolean, string id)
@@ -102,5 +104,14 @@ function changeLock(value,displayAs) {
 }
 //Change rotation of an element (degrees (centered at 0), string id)
 function changeLevel(value,displayAs) {
-
+	var svg = document.getElementById("levelLine" + displayAs); //Yaw
+	var text = document.getElementById("levelText" + displayAs);
+	text.innerHTML = value + "deg";
+	value = value * -1;
+	svg.style.transform = "rotate(" + value + "deg)";
+}
+function changeCompass(value,displayAs) {
+	var compassLine = document.getElementById("compassSVG" + displayAs);
+	value=value+180;
+	compassLine.style.transform = "rotate(" + value + "deg)";
 }
