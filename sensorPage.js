@@ -1,5 +1,5 @@
 //Change circle gauge (number,string id,number,number,boolean,string)
-function changeCircle(value,displayAs,start,end,usePercent,unit='') {
+function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=2,changeAmount=0) {
 	var spinCircle = document.getElementById("circleGauge" + displayAs);
 	var gaugeText = document.getElementById("circleGaugeText" + displayAs);
 	var startLimit = document.getElementById("startLimit" + displayAs);
@@ -10,27 +10,38 @@ function changeCircle(value,displayAs,start,end,usePercent,unit='') {
 	else if (value < start) {
 		value = start;
 	}
-	startLimit.innerHTML = start;
-	endLimit.innerHTML = end;
+	if (start.toString().substring(0,1) === "[" || end.toString().substring(0,1) === "[") {
+
+	}
+	else {
+		startLimit.innerHTML = start;
+		endLimit.innerHTML = end;
+	}
 
 	//scale the start and end of the gauge to begin at 0
 	end = end-start;
 	start=0;
-	console.log("Start is " + start + " and end is " + end);
+	var fixed = value.toFixed(fixAmount);
+	var stringValue = value.toString();
+	//console.log("Start is " + start + " and end is " + end);
 	var newDegrees;
 	var percentage = (((value/100)*end)/end);
 	if (usePercent) {
 		newDegrees = ((((value/100)*end)/end)*180)-90;
-		gaugeText.innerHTML = value + "%";
+		gaugeText.innerHTML = fixed + "%";
 	}
 	//use the literal value
 	else {
-		gaugeText.innerHTML = value + unit;
-		newDegrees = (value/end)*180-90;
-		console.log(newDegrees + ", start is " + start + " end is " + end + ", value is " + value);
+		gaugeText.innerHTML = fixed + unit;
+		newDegrees = map(value,start,end,0,180)-180;//(value/end)*180-90;
+		newDegrees = newDegrees+changeAmount;
+		//console.log(newDegrees + ", start is " + start + " end is " + end + ", value is " + value);
 	}
     spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
     spinCircle.style.transform = "translate3d(-00px,00px,0px) rotate(" + newDegrees + "deg)";
+}
+function map(x, in_min, in_max, out_min, out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 //Change boolean gauge (boolean,string id, boolean)
 function changeSwitch(value,displayAs,on) {
@@ -58,9 +69,12 @@ function changeSwitch(value,displayAs,on) {
 	}
 }
 //Change numberIndicator (number,number,number,string id, string)
-function changeNumber(value,limitLow,limitHigh, displayAs,unit) {
+function changeNumber(value,limitLow,limitHigh, displayAs,unit,fixAmount=-1) {
 	var text = document.getElementById("numberReadoutValue" + displayAs);
 	var element = document.getElementById("numberReadout" + displayAs);
+	if (fixAmount != -1) {
+		value = value.toFixed(fixAmount);
+	}
 	text.innerHTML = value + unit;
 	textFit(element,{alignVert: true, alignHoriz: true});
 	if (limitLow != 0 && limitHigh != 0) {
@@ -77,11 +91,11 @@ function changeArrow(value,displayAs) {
 	var arrow = document.getElementById("arrowUp" + displayAs);
 	var box = document.getElementById("arrow" + displayAs);
 	if (value) {
-		box.style.transform = "rotate(0deg)";
+		box.style.transform = "rotate(0deg) translateX(45px) translateY(-15px)";
 		arrow.style.animationName = "pulseUp";
 	}
 	else {
-		box.style.transform = "rotate(180deg)";
+		box.style.transform = "rotate(180deg) translateX(45px) translateY(-15px)";
 		arrow.style.animationName = "pulseDown";
 	}
 }
@@ -106,7 +120,8 @@ function changeLock(value,displayAs) {
 function changeLevel(value,displayAs) {
 	var svg = document.getElementById("levelLine" + displayAs); //Yaw
 	var text = document.getElementById("levelText" + displayAs);
-	text.innerHTML = value + "deg";
+	var fixed = value.toFixed(3);
+	text.innerHTML = fixed + "deg";
 	value = value * -1;
 	svg.style.transform = "rotate(" + value + "deg)";
 }

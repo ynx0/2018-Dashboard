@@ -7,16 +7,18 @@
     <link href="css/style.css" rel="stylesheet">
     <!-- <script src="knockout-min.js"></script> -->
     <!-- <script src="connection.js"></script> -->
-
+        <script src="ui.js"></script>
+    <script src="sensorPage.js"></script>
+    <script src="gauges.js"></script>
+    <script src="sensorPageListeners.js"></script>
+    <script src="node_modules/textfit/textFit.js"></script>
 <!--     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
  -->
     <link rel="stylesheet" href="fontawesome/web-fonts-with-css/css/fontawesome-all.css"></link>
     </head>
 
-<body onresize="resize()"> <!-- onresize="resize()" -->
+<body onload="registerHandlers()" onresize="resize()" > <!-- onresize="resize()" -->
     <!-- Clock that shows up in top left -->
-    <script src="tryIPC.js"></script>
-    <script src="networktables/networktables.js"></script>
     <div id="sensorpage">
         <div id="powerStats" class="card"> 
             <p class="title">Power</p>
@@ -272,7 +274,7 @@
     </div>
 
     <div id="camera">
-        <image onclick="checkCamera()" id="cameraFeed" src="http://192.168.9.91:8080" onerror="this.src='Thomas_Tank_Engine_2.png';"> </image>
+        <!-- <image onclick="checkCamera()" id="cameraFeed" src="http://192.168.9.91:8080" onerror="this.src='Thomas_Tank_Engine_2.png';"> </image> -->
     </div>
 
     <!-- 
@@ -437,7 +439,6 @@
         </div>
         -->
     <!-- </aside> -->
-    <p id="helpText">Dashboard will connect automatically if robot is found</p>
     <div id="login">
         <div class="slidecontainer"> Move Left Power Gauge
             <input type="range" min="-100" max="100" value="50" class= "slider" onchange="moveLeftMotorGauge(this.value)">
@@ -464,11 +465,6 @@
         <button onclick="tiltRobot(2)">Tilt Robot</button>
         <button onclick="sensorPage(true)">Sensor Page</button>
     </div>
-    <script src="ui.js"></script>
-    <script src="sensorPage.js"></script>
-    <script src="gauges.js"></script>
-    <script src="sensorPageListeners.js"></script>
-    <script src="node_modules/textfit/textFit.js"></script>
 </body>
 
 </html>
