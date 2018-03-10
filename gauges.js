@@ -8,7 +8,10 @@ function moveLeftMotorGauge(value) {
     bar.style.fill = fillColor;
 
     for (i = 0; i < leftDiagonalLines.length; i++) {
-        leftDiagonalLines[i].setAttribute("style","stroke:" + fillColor + ";stroke-width:" + writeColor/50);
+        if (writeColor/50 > 2) {
+            writeColor = 100;
+        }
+            leftDiagonalLines[i].setAttribute("style","stroke:" + fillColor + ";stroke-width:" + writeColor/50);
     }
     //<rect id = "leftPowerGauge" class="squareGaugeBar" x="0" y="100" width="30" height="1"/>
     text = document.getElementById("leftPowerGaugePercentage");
@@ -84,6 +87,9 @@ function moveRightMotorGauge(value) {
     bar.style.fill = fillColor;
 
     for (i = 0; i < leftDiagonalLines.length; i++) {
+        if (writeColor/50 > 2) {
+            writeColor = 100;
+        }
         leftDiagonalLines[i].setAttribute("style","stroke:" + fillColor + ";stroke-width:" + writeColor/50);
     }
     //<rect id = "leftPowerGauge" class="squareGaugeBar" x="0" y="100" width="30" height="1"/>

@@ -138,6 +138,11 @@ header {
     transform: translate3d(-1335px,145px,0);
     background: transparent;
 }
+#intake {
+    width: 300px;
+    height: 100px;
+    transform: translate3d(270px,-746px,0);
+}
 .title {
     text-align: center;
     font-size: 20px;
@@ -666,6 +671,12 @@ body.login-close #login {
 }
 #gaugeLeftVelocity {
     transform: translate3d(-1310px,370px,0);
+}
+#gaugeIntakeVelocity{
+    transform: translate3d(-1075px,60px,0px);
+}
+#gaugeIntakeAmps {
+    transform: translate3d(-960px,60px,0px);
 }
 #numberReadoutParentLeftPosition {
     transform: translate3d(50px,-220px,0);

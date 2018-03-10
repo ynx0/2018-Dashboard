@@ -1,5 +1,5 @@
 //Change circle gauge (number,string id,number,number,boolean,string)
-function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,changeAmount=0,symetrical=false) {
+function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,changeAmount=0,symetrical=false,limit=null) {
 	var spinCircle = document.getElementById("circleGauge" + displayAs);
 	var gaugeText = document.getElementById("circleGaugeText" + displayAs);
 	var startLimit = document.getElementById("startLimit" + displayAs);
@@ -17,13 +17,7 @@ function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,c
 		startLimit.innerHTML = start;
 		endLimit.innerHTML = end;
 	}
-
-	//scale the start and end of the gauge to begin at 0
-	end = end-start;
-	start=0;
 	var fixed = value.toFixed(fixAmount);
-	var stringValue = value.toString();
-	//console.log("Start is " + start + " and end is " + end);
 	var newDegrees;
 	if (usePercent) {
 		newDegrees = ((((value/100)*end)/end)*180)-90;
@@ -32,27 +26,30 @@ function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,c
 	//use the literal value
 	else {
 		gaugeText.innerHTML = fixed + unit;
-		newDegrees = map(value,start,end,0,180)-180;//(value/end)*180-90;
-		newDegrees = newDegrees+changeAmount;
-		//console.log(newDegrees + ", start is " + start + " end is " + end + ", value is " + value);
+		newDegrees = map(value,start,end,0,180)-90;//(value/end)*180-90;
 	}
-	var percentageAdjustOfCircle = changeAmount/(start+end);
 	var percentage = map(value,start,end,0,100)/100;
-	console.log("percentage is " + percentage + " percentage adjustment is " + percentageAdjustOfCircle + " and value is " + value);
+	spinCircle.style.transform = "translate3d(-00px,00px,0px) rotate(" + newDegrees + "deg)";
 	if (symetrical) { 
-		if(value*100 < ((start+end)/2)) {
-			console.log("ran1");
-			percentage = Math.abs(map(percentage,start,end,0,-100));
+		percentage+=100;
+		if(percentage*100 < ((start+end)/2)+50) {
+			percentage = map(percentage,0,1,0,-100);
 		}
 		else {
-			console.log("ran2");
-			percentage = map(percentage,start,end,0,100);
+			percentage = map(percentage,0,1,0,100);
 		}
-		percentage*=80;
+		//console.log("percentage before change is " + percentage);
+		percentage = (percentage-10000) / 100;
+		percentage = Math.abs(percentage);
+		console.log("percentage before change " + percentage);
+		if (percentage < .5) {
+			percentage=percentage+(.5-percentage)*2;
+		}
+		percentage *= 2;
+		console.log("percentage after change " + percentage)
 	}
-	console.log("changing color to " + "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")")
-    spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
-    spinCircle.style.transform = "translate3d(-00px,00px,0px) rotate(" + newDegrees + "deg)";
+	//console.log("changing color to " + "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ") with percentage being " + percentage);
+	spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
 }
 //Map one scale onto another
 function map(x, in_min, in_max, out_min, out_max) {
