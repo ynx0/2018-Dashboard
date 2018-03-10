@@ -5,7 +5,7 @@ nt.setReconnectDelay(1000);
 
 nt.start((isConnected, err) => {
     console.log("Started NT client");
-}, '10.4.1.2');//localhost
+}, 'localhost');//localhost 10.4.1.2
 
 // Define UI elements
 let ui = {
@@ -55,6 +55,7 @@ onkeydown = key => {
         console.log(key.key);
 };
 if (noElectron) {
+
     document.body.classList.add('login-close');
 }
 
@@ -297,8 +298,8 @@ function moveElevator(value) {
     cube.style.y = -5+movement;
 }
 
-
 function armMover(value) {
+
     ui.robotDiagram.arm.style.transform = `rotate(${value}deg)`;
 }
 
@@ -335,7 +336,7 @@ function tiltRobot(value) {
 }
 
 function runAnimation(element, name) {
-    console.log('Ran animation ' + name);
+    //console.log('Ran animation ' + name);
     element.style.animationName = null;
     element.offsetHeight; /* trigger reflow */
     element.style.animationName = name;
@@ -348,61 +349,84 @@ function addKeyListener(inKey, lambda) {
         };
     });
 };
+
+
+
 function registerHandlers() {
-var driveMax = 0;
-var driveMin = 0;
-var maxDriveAmps = 0;
-addKeyListener('/SmartDashboard/vbus', (key, value) => {
-    changeCircle(value,'Voltage',6,15,false, 'V',2);
-});
+    var driveMax = 0;
+    var driveMin = 0;
+    var maxDriveAmps = 0;
+    addKeyListener('/SmartDashboard/vbus', (key, value) => {
+        changeCircle(value,'Voltage',6,15,false, 'V',2,-30);
+    });
 
-addKeyListener('/SmartDashboard/totalAmps', (key, value) => {
-    changeNumber(value,0,200,'TotalAmps', ' A');
-});
+    addKeyListener('/SmartDashboard/totalAmps', (key, value) => {
+        changeNumber(value,0,200,'TotalAmps', ' A');
+    });
 
-addKeyListener('/SmartDashboard/driveShift', (key,value) =>  {
-    changeArrow(value == "high", 'DriveShift');
-});
+    addKeyListener('/SmartDashboard/driveShift', (key,value) =>  {
+        changeArrow(value == "high", 'DriveShift');
+    });
+
+    addKeyListener('/SmartDashboard/maxDriveAmps', (key,value) => {
+        maxDriveAmps = value;
+    });
+    addKeyListener('/SmartDashboard/driveLeftAmps', (key,value) =>  {
+        changeNumber(value,0,maxDriveAmps,'CurrentLeft', ' A');
+    });
+    addKeyListener('/SmartDashboard/driveRightAmps', (key,value) =>  {
+        changeNumber(value,0,maxDriveAmps,'CurrentRight', ' A');
+    });
 
 
-addKeyListener('/SmartDashboard/maxDriveAmps', (key,value) => {
-    maxDriveAmps = value;
-});
-addKeyListener('/SmartDashboard/driveLeftAmps', (key,value) =>  {
-    changeNumber(value,0,maxDriveAmps,'CurrentLeft', ' A');
-});
-addKeyListener('/SmartDashboard/driveRightAmps', (key,value) =>  {
-    changeNumber(value,0,maxDriveAmps,'CurrentRight', ' A');
-});
+    addKeyListener('/SmartDashboard/driveMaxVelocity', (key,value) => {
+        driveMax = value;
+    });
+    addKeyListener('/SmartDashboard/driveMinVelocity', (key,value) => {
+        driveMin = value;
+    });
+    addKeyListener('/SmartDashboard/driveLeftVelocity', (key,value) =>  {
+        var passedValue = value;
+        console.log("from network tables: " + value);
+        changeCircle(value,'LeftVelocity',driveMin,driveMax,false," RPM",1,-180,true);
+        if (passedValue > 0) {
+            moveLeftMotorGauge((passedValue/driveMax)*100);
+        }
+        else if (passedValue == 0) {
+            moveLeftMotorGauge(0);
+        }
+        else {
+            moveLeftMotorGauge((passedValue/driveMin)*-100);
+        }
+    });
+    addKeyListener('/SmartDashboard/driveRightVelocity', (key,value) =>  {
+        console.log("from network tables: " + value);
+        var passedValue = value;
+        changeCircle(value,'RightVelocity',driveMin,driveMax,false," RPM",1,-180,true);
+        if (passedValue > 0) {
+            moveRightMotorGauge((passedValue/driveMax)*-100);
+        }
+        else if (passedValue == 0) {
+            moveRightMotorGauge(0);
+        }
+        else {
+            moveRightMotorGauge((passedValue/driveMin)*100);
+        }
+    });
 
+    addKeyListener('/SmartDashboard/driveLeftPosition', (key,value) =>  {
+        changeNumber(value,0,0,'LeftPosition', ' R',1);
+    });
 
-addKeyListener('/SmartDashboard/driveMaxVelocity', (key,value) => {
-    driveMax = value;
-});
-addKeyListener('/SmartDashboard/driveMinVelocity', (key,value) => {
-    driveMin = value;
-});
-addKeyListener('/SmartDashboard/driveLeftVelocity', (key,value) =>  {
-    changeCircle(value,'LeftVelocity',driveMin,driveMax,false," RPM",1,-180);
-});
-addKeyListener('/SmartDashboard/driveRightVelocity', (key,value) =>  {
-    changeCircle(value,'RightVelocity',driveMin,driveMax,false," RPM",1,-180)
-});
+    addKeyListener('/SmartDashboard/driveRightPosition', (key,value) =>  {
+        changeNumber(value,0,0,'RightPosition', ' R',1);
+    });
 
-addKeyListener('/SmartDashboard/driveLeftPosition', (key,value) =>  {
-    changeNumber(value,0,0,'LeftPosition', ' R',1);
-});
+    addKeyListener('/SmartDashboard/pitch', (key,value) =>  {
+        changeLevel(value,"Pitch");
+    });
 
-addKeyListener('/SmartDashboard/driveRightPosition', (key,value) =>  {
-    changeNumber(value,0,0,'RightPosition', ' R',1);
-});
-
-addKeyListener('/SmartDashboard/pitch', (key,value) =>  {
-    changeLevel(value,"Pitch");
-});
-
-addKeyListener('/SmartDashboard/yaw', (key,value) =>  {
-    changeCompass(value,"Compass");
-});
-
+    addKeyListener('/SmartDashboard/yaw', (key,value) =>  {
+        changeCompass(value,"Compass");
+    });
 }

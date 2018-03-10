@@ -1,5 +1,5 @@
 //Change circle gauge (number,string id,number,number,boolean,string)
-function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=2,changeAmount=0) {
+function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,changeAmount=0,symetrical=false) {
 	var spinCircle = document.getElementById("circleGauge" + displayAs);
 	var gaugeText = document.getElementById("circleGaugeText" + displayAs);
 	var startLimit = document.getElementById("startLimit" + displayAs);
@@ -25,7 +25,6 @@ function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=2,c
 	var stringValue = value.toString();
 	//console.log("Start is " + start + " and end is " + end);
 	var newDegrees;
-	var percentage = (((value/100)*end)/end);
 	if (usePercent) {
 		newDegrees = ((((value/100)*end)/end)*180)-90;
 		gaugeText.innerHTML = fixed + "%";
@@ -37,10 +36,27 @@ function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=2,c
 		newDegrees = newDegrees+changeAmount;
 		//console.log(newDegrees + ", start is " + start + " end is " + end + ", value is " + value);
 	}
+	var percentageAdjustOfCircle = changeAmount/(start+end);
+	var percentage = map(value,start,end,0,100)/100;
+	console.log("percentage is " + percentage + " percentage adjustment is " + percentageAdjustOfCircle + " and value is " + value);
+	if (symetrical) { 
+		if(value*100 < ((start+end)/2)) {
+			console.log("ran1");
+			percentage = Math.abs(map(percentage,start,end,0,-100));
+		}
+		else {
+			console.log("ran2");
+			percentage = map(percentage,start,end,0,100);
+		}
+		percentage*=80;
+	}
+	console.log("changing color to " + "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")")
     spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
     spinCircle.style.transform = "translate3d(-00px,00px,0px) rotate(" + newDegrees + "deg)";
 }
+//Map one scale onto another
 function map(x, in_min, in_max, out_min, out_max) {
+
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 //Change boolean gauge (boolean,string id, boolean)
@@ -125,6 +141,7 @@ function changeLevel(value,displayAs) {
 	value = value * -1;
 	svg.style.transform = "rotate(" + value + "deg)";
 }
+//Modifies the degree of rotation on a compass element (degrees,id)
 function changeCompass(value,displayAs) {
 	var compassLine = document.getElementById("compassSVG" + displayAs);
 	value=value+180;

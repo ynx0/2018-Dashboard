@@ -1,5 +1,6 @@
 // Square Gauges
 function moveLeftMotorGauge(value) {
+    console.log("passed " + value);
     var leftDiagonalLines = document.getElementsByClassName("leftDiagonalLines");
     bar = document.getElementById("leftPowerGauge");
     var writeColor = Math.abs(value);
