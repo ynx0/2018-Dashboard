@@ -1,5 +1,5 @@
 //Change circle gauge (number,string id,number,number,boolean,string)
-function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,changeAmount=0,symetrical=false,limit=null) {
+function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,changeAmount=0,symetrical=false,limit=Infinity) {
 	var spinCircle = document.getElementById("circleGauge" + displayAs);
 	var gaugeText = document.getElementById("circleGaugeText" + displayAs);
 	var startLimit = document.getElementById("startLimit" + displayAs);
@@ -41,15 +41,25 @@ function changeCircle(value,displayAs,start,end,usePercent,unit='',fixAmount=0,c
 		//console.log("percentage before change is " + percentage);
 		percentage = (percentage-10000) / 100;
 		percentage = Math.abs(percentage);
-		console.log("percentage before change " + percentage);
+		//console.log("percentage before change " + percentage);
 		if (percentage < .5) {
 			percentage=percentage+(.5-percentage)*2;
 		}
 		percentage *= 2;
-		console.log("percentage after change " + percentage)
+		//console.log("percentage after change " + percentage)
 	}
 	//console.log("changing color to " + "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ") with percentage being " + percentage);
-	spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
+	if (limit == Infinity) {
+		spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
+	}
+	else {
+		if (value > limit) {
+			spinCircle.style.fill = "rgb(255,0,0)";
+		}
+		else {
+			spinCircle.style.fill = "rgb(" + parseInt((((percentage) * 72) + 23)) + "," + parseInt((((percentage) * -124) + 197)) + "," + parseInt((((percentage) * -50) + 218)) + ")";
+		}
+	}
 }
 //Map one scale onto another
 function map(x, in_min, in_max, out_min, out_max) {
@@ -90,12 +100,15 @@ function changeNumber(value,limitLow,limitHigh, displayAs,unit,fixAmount=-1) {
 	}
 	text.innerHTML = value + unit;
 	textFit(element,{alignVert: true, alignHoriz: true});
-	if (limitLow != 0 && limitHigh != 0) {
+	if (limitLow != limitHigh) {
 		if (value > limitHigh) {
 			element.style.background = "rgb(255,0,0)";
 		}
 		else if (value < limitLow) {
 			element.style.background = "rgb(255,0,0)";
+		}
+		else {
+			element.style.background = "#192A31"
 		}
 	}
 }
@@ -104,11 +117,11 @@ function changeArrow(value,displayAs) {
 	var arrow = document.getElementById("arrowUp" + displayAs);
 	var box = document.getElementById("arrow" + displayAs);
 	if (value) {
-		box.style.transform = "rotate(0deg) translateX(45px) translateY(-15px)";
+		box.style.transform = "rotate(0deg) translateX(42px) translateY(-15px)";
 		arrow.style.animationName = "pulseUp";
 	}
 	else {
-		box.style.transform = "rotate(180deg) translateX(45px) translateY(-15px)";
+		box.style.transform = "rotate(180deg) translateX(-45px) translateY(-0px)";
 		arrow.style.animationName = "pulseDown";
 	}
 }
@@ -133,7 +146,7 @@ function changeLock(value,displayAs) {
 function changeLevel(value,displayAs) {
 	var svg = document.getElementById("levelLine" + displayAs); //Yaw
 	var text = document.getElementById("levelText" + displayAs);
-	var fixed = value.toFixed(3);
+	var fixed = value.toFixed(2);
 	text.innerHTML = fixed + "deg";
 	value = value * -1;
 	svg.style.transform = "rotate(" + value + "deg)";

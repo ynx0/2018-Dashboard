@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="fontawesome/web-fonts-with-css/css/fontawesome-all.css"></link>
     </head>
 
-<body onload="registerHandlers()" onresize="resize()" > <!-- onresize="resize()" -->
+<body onkeyPress="toggleSensorPage()" onload="registerHandlers()" onresize="resize()" > <!-- onresize="resize()" -->
     <!-- Clock that shows up in top left -->
     <div id="sensorpage">
         <div id="powerStats" class="card"> 
@@ -40,17 +40,17 @@
                         <circle cx="65" cy="65" r="40" style="fill: #192A31;stroke-width:0; stroke:transparent;"></circle>
                         <circle cx="65" cy="65" r="3" style="fill: white;stroke-width:0; stroke:transparent;"></circle>
                         <line class="compassLine" id="compassLineCompass" x1="65" y1="65" x2="65" y2="105" style="stroke:
-                        rgb(255,255,255);stroke-width:2" />
+                        rgb(255,255,255);stroke-width:1" />
                         <line class="compassLine" id="compassLineCompass" x1="60" y1="100" x2="65" y2="105" style="stroke:
-                        rgb(255,255,255);stroke-width:2" />
+                        rgb(255,255,255);stroke-width:1" />
                         <line class="compassLine" id="compassLineCompass" x1="70" y1="100" x2="65" y2="105" style="stroke:
-                        rgb(255,255,255);stroke-width:2" />
+                        rgb(255,255,255);stroke-width:1" />
                     </svg> 
                 </div>
             </div>
             <div class="level" id="levelPitch">
                 <svg width="130" height="130"> 
-                    <line id="levelLinePitch" class="levelLine" x1="20" y1="65" x2="110" y2="65" style="stroke:rgb(255,255,255);stroke-width:2" />
+                    <line id="levelLinePitch" class="levelLine" x1="20" y1="65" x2="110" y2="65" style="stroke:rgb(255,255,255);stroke-width:1" />
                 </svg>
                 <p id="levelTextPitch" class="levelText">0deg</p>
                 <p class="levelTextName">Pitch</p>
@@ -89,8 +89,77 @@
                     <p class="numberReadoutValue" id="numberReadoutValueRightPosition"></p>
                 </div>
             </div>
+
             <div class="card" id="intake">
                 <p class="title">Intake</p>
+
+                <div class="numberReadoutParent" id="numberReadoutParentIntakePosition">
+                    <p class="numberReadoutName">Position</p>
+                        <div class="numberReadout" id="numberReadoutIntakePosition">
+                            <p class="numberReadoutValue" id="numberReadoutValueIntakePosition"></p>
+                    </div>
+                </div>
+
+                <div class="numberReadoutParent" id="numberReadoutParentIntakeLeftCurrent">
+                    <p class="numberReadoutName">Left Current</p>
+                        <div class="numberReadout" id="numberReadoutIntakeLeftCurrent">
+                            <p class="numberReadoutValue" id="numberReadoutValueIntakeLeftCurrent"></p>
+                    </div>
+                </div>
+
+                <div class="numberReadoutParent" id="numberReadoutParentIntakeRightCurrent">
+                    <p class="numberReadoutName">Right Current</p>
+                        <div class="numberReadout" id="numberReadoutIntakeRightCurrent">
+                            <p class="numberReadoutValue" id="numberReadoutValueIntakeRightCurrent"></p>
+                    </div>
+                </div>
+
+                <svg id="intakeSVG">
+                    <line x1="59" y1="43" x2="59" y2="0" style="stroke:rgb(255,255,255);stroke-width:1" />
+                </svg>
+            </div>
+
+            <div class="card" id="elevator">
+                <p class="title">Intake</p>
+                <div>
+                    <div class="switch" id="switchKicker">
+                        <div id="switchGreenKicker" class="switchGreen"> </div>
+                        <div id="switchRedKicker" class="switchRed"> </div>
+                        <p class="switchText">Kicker</p>
+                    </div>
+                    <div class="switch" id="switchClamp">
+                        <div id="switchGreenClamp" class="switchGreen"> </div>
+                        <div id="switchRedClamp" class="switchRed"> </div>
+                        <p class="switchText">Clamp</p>
+                    </div>
+                    <div class="switch" id="switchLowerLimit">
+                        <div id="switchGreenLowerLimit" class="switchGreen"> </div>
+                        <div id="switchRedLowerLimit" class="switchRed"> </div>
+                        <p class="switchText">Lower Limit</p>
+                    </div>
+                    <div class="switch" id="switchRatchet">
+                        <div id="switchGreenRatchet" class="switchGreen"> </div>
+                        <div id="switchRedRatchet" class="switchRed"> </div>
+                        <p class="switchText">Ratchet</p>
+                    </div>
+                    <svg id="elevatorSVG" style="transform: translateY(-225px);"><line x1="0" y1="85" x2="480" y2="85" style="stroke:rgb(255,255,255);stroke-width:1" /></svg>
+                </div>
+                <!-- 
+                <div class="switch" id="switchTest">
+                    <p class="siwtchText">Clamp</p>
+                    <div id="switchGreenTest" class="switchGreen"> </div>
+                    <div id="switchRedTest" class="switchRed"> </div>
+                </div>
+                <div class="switch" id="switchTest">
+                    <p class="siwtchText">Lower Limit</p>
+                    <div id="switchGreenTest" class="switchGreen"> </div>
+                    <div id="switchRedTest" class="switchRed"> </div>
+                </div>
+                <div class="switch" id="switchTest">
+                    <p class="siwtchText">Rachet</p>
+                    <div id="switchGreenTest" class="switchGreen"> </div>
+                    <div id="switchRedTest" class="switchRed"> </div>
+                </div> -->
             </div>
         </div>
 
@@ -116,8 +185,8 @@
     </div>
     <button id="mainPageButton" onclick="sensorPage(false)">Main Page</button>
     <svg id="driveTrainSvg" width="390px" height="365px">
-        <line x1="185" y1="365" x2="185" y2="135" style="stroke:rgb(255,255,255);stroke-width:2" />
-        <line x1="-10" y1="135" x2="390" y2="135" style="stroke:rgb(255,255,255);stroke-width:2" />
+        <line x1="185" y1="365" x2="185" y2="135" style="stroke:rgb(255,255,255);stroke-width:1" />
+        <line x1="-10" y1="135" x2="390" y2="135" style="stroke:rgb(255,255,255);stroke-width:1" />
     </svg>
     <!-- INTAKE CIRCLE GAUGS -->
 

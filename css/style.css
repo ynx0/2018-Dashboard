@@ -15,7 +15,7 @@ Colors:
     display: none;
 }
 body {
-	transition: 1s cubic-bezier(.8,.01,.71,.99);
+	transition: .2s cubic-bezier(.8,.01,.71,.99);
     font: 16px sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -139,9 +139,18 @@ header {
     background: transparent;
 }
 #intake {
-    width: 300px;
+    width: 610px;
     height: 100px;
     transform: translate3d(270px,-746px,0);
+}
+#elevator  {
+    transform: translate3d(410px,-730px,0);
+    height: 365px;
+    width: 480px;
+}
+#elevatorSVG {
+    height: 365px;
+    width: 480px;
 }
 .title {
     text-align: center;
@@ -525,34 +534,49 @@ body.login-close #login {
 /*Switch graphic*/
 .switch {
     width: 100px;
-    height: 35px;
-    overflow: hidden;
+    height: 10px;
+    overflow: visible;
     background: #192A31;
     border-radius: 3px;
 }
-@keyframes booleanFlash {
-    1% {background: rgb(255,255,255);}
+@keyframes booleanFlashGreen {
+    1% {background: #25F125;}
+
+}
+@keyframes booleanFlashRed {
+    1% {background: #A12525;}
 
 }
 .switchGreen {
     transition: .4s cubic-bezier(0,.99,.3,1.01);
-    animation-name: booleanFlash;
+   /*animation-name: booleanFlashGreen; */
     animation-duration: 2s;
+    animation-delay: 1s;
     animation-iteration-count: infinite;
     width: 100px;
     height: 35px;
     z-index: 1;
-    background: #25D125;
+    transform: translateX(100px);
+    background: #00FF00;
 }
 
 .switchRed {
     transition: .4s cubic-bezier(0,.99,.3,1.01);
-    animation-name: booleanFlash;
-    animation-duration: 1s;
+  /*animation-duration: 2s; */
     animation-iteration-count: infinite;
     width: 100px;
     height: 35px;
-    background: #D12525;
+    transform: translateY(-63px) translateX(-100px);
+    background: #FF0000;
+}
+.switchText {
+    padding-top: 5px;
+    z-index: 3;
+    background:#293A41;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-43px);
+    font-size: 15px;
 }
 /* Compass */
 .compassDiv {
@@ -612,7 +636,7 @@ body.login-close #login {
 }
 .switch {
     width: 100px;
-    height: 35px;
+    height: 50px;
     overflow: hidden;
     background: #192A31;
     border-radius: 3px;
@@ -683,6 +707,36 @@ body.login-close #login {
 }
 #numberReadoutParentRightPosition {
     transform: translate3d(240px,-274px,0);
+}
+#numberReadoutParentIntakePosition {
+    transform: translate3d(250px,8px,0);
+}
+#numberReadoutParentIntakeLeftCurrent {
+    transform: translate3d(380px,-46px,0);
+}
+#numberReadoutParentIntakeRightCurrent {
+    transform: translate3d(495px,-100px,0);
+}
+
+
+#switchKicker {
+    transform: translateX(10px);
+}
+#switchClamp {
+    transform: translateX(130px) translateY(-50px);
+}
+#switchLowerLimit {
+    transform: translateX(250px) translateY(-100px);
+}
+#switchRatchet {
+    transform: translateX(370px) translateY(-150px);
+}
+
+#intakeSVG {
+    width: 120px;
+    height: 45px;
+    transform: translate3d(428px,-140px,0);
+    z-index: 2;
 }
 
 @keyframes fadeBack {

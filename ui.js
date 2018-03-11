@@ -329,6 +329,18 @@ function sensorPage(value) {
         body.style.transform = "translate3d(0px,0px,0px)"
     }
 }
+function toggleSensorPage() {
+    var bodyX = document.body.style.transform;
+    //console.log(bodyX);
+    if (bodyX == "translate3d(0px, 0px, 0px)") {
+        //console.log("moving to sensor page");
+        sensorPage(true);
+    }
+    else {
+        console.log("resetting");
+        sensorPage(false);
+    }
+}
 
 function tiltRobot(value) {
     var robot = document.getElementById("robot-diagram");
@@ -356,9 +368,53 @@ function registerHandlers() {
     var driveMax = 500;
     var driveMin = -500;
     var maxDriveAmps = 0;
-    var intakeMin = 0;
-    var intakeMax = 0;
-    var maxAmps = 0; 
+    var intakeMinVelocity = 0;
+    var intakeMaxVelocity = 0;
+    var maxIntakeLeftAmps = 0;
+    var maxIntakeRightAmps = 0;
+    var maxIntakeAmps = 0; 
+
+
+    addKeyListener('/SmartDashboard/maxDriveAmps', (key,value) => {
+        maxDriveAmps = value;
+    });
+    addKeyListener('/SmartDashboard/maxIntakeLeftAmps', (key,value) => {
+        maxIntakeLeftAmps = value;
+    })
+    addKeyListener('/SmartDashboard/maxIntakeRightAmps', (key,value) => {
+        maxIntakeRightAmps = value;
+    })
+    addKeyListener('/SmartDashboard/driveMaxVelocity', (key,value) => {
+        driveMax = value;
+    });
+    addKeyListener('/SmartDashboard/driveMinVelocity', (key,value) => {
+        driveMin = value;
+    });
+
+    addKeyListener('/SmartDashboard/intakeMaxVelocity', (key,value) => {
+        intakeMaxVelocity = value;
+    });
+    addKeyListener('/SmartDashboard/intakeMinVelocity', (key,value) => {
+        intakeMinVelocity = value;
+    });
+    addKeyListener('/SmartDashboard/maxIntakeAmps', (key,value) => {
+        maxIntakeAmps = value;
+    })
+
+    addKeyListener('/SmartDashboard/intakeVelocity', (key,value) => {
+        console.log("intakeMinVelocity " + intakeMinVelocity + " intake max " + intakeMaxVelocity);
+        changeCircle(value,'IntakeVelocity',intakeMinVelocity,intakeMaxVelocity,false,' RPM',2,0,false);
+    });
+
+    addKeyListener('/SmartDashboard/intakeAmps', (key,value) => {
+        changeCircle(value,'IntakeAmps',0,90,false,'A',2,0,false,maxIntakeAmps);
+    });
+    addKeyListener('/SmartDashboard/intakePos', (key,value) => {
+        console.log("maxIntakeAmps is " + maxIntakeAmps);
+        changeNumber(value,0,maxIntakeAmps,'IntakePosition', ' A',1,2);
+    });
+
+
     addKeyListener('/SmartDashboard/vbus', (key, value) => {
         changeCircle(value,'Voltage',6,15,false, 'V',2,0);
     });
@@ -371,29 +427,11 @@ function registerHandlers() {
         changeArrow(value == "high", 'DriveShift');
     });
 
-    addKeyListener('/SmartDashboard/maxDriveAmps', (key,value) => {
-        maxDriveAmps = value;
-    });
     addKeyListener('/SmartDashboard/driveLeftAmps', (key,value) =>  {
         changeNumber(value,0,maxDriveAmps,'CurrentLeft', ' A');
     });
     addKeyListener('/SmartDashboard/driveRightAmps', (key,value) =>  {
         changeNumber(value,0,maxDriveAmps,'CurrentRight', ' A');
-    });
-
-
-    addKeyListener('/SmartDashboard/driveMaxVelocity', (key,value) => {
-        driveMax = value;
-    });
-    addKeyListener('/SmartDashboard/driveMinVelocity', (key,value) => {
-        driveMin = value;
-    });
-
-    addKeyListener('/SmartDashboard/intakeMaxVelocity', (key,value) => {
-        intakeMax = value;
-    });
-    addKeyListener('/SmartDashboard/intakeMinVelocity', (key,value) => {
-        intakeMin = value;
     });
 
 
@@ -426,17 +464,6 @@ function registerHandlers() {
         }
     });
 
-    addKeyListener('/SmartDashboard/intakeVelocity', (key,value) => {
-        console.log("intakeMin " + intakeMin + " intake max " + intakeMax);
-        changeCircle(value,'IntakeVelocity',intakeMin,intakeMax,false,' RPM',2,0,false);
-    });
-    addKeyListener('/SmartDashboard/maxIntakeAmps', (key,value) => {
-        maxAmps = value;
-    })
-    addKeyListener('/SmartDashboard/intakeAmps', (key,value) => {
-        changeCircle(value,'IntakeAmps',0,90,false,'A',2,0,false,maxAmps);
-    });
-
     addKeyListener('/SmartDashboard/driveLeftPosition', (key,value) =>  {
         changeNumber(value,0,0,'LeftPosition', ' R',1,2);
     });
@@ -452,4 +479,29 @@ function registerHandlers() {
     addKeyListener('/SmartDashboard/yaw', (key,value) =>  {
         changeCompass(value,"Compass");
     });
+
+
+    addKeyListener('/SmartDashboard/intakeLeftAmps', (key,value) => {
+        console.log("passing " + value + " from 0 to " + maxIntakeLeftAmps);
+        changeNumber(value,0,maxIntakeLeftAmps,'IntakeLeftCurrent', ' A',1,2);
+    });
+    addKeyListener('/SmartDashboard/intakeRightAmps', (key,value) => {
+        console.log("passing " + value + " from 0 to " + maxIntakeRightAmps);
+        changeNumber(value,0,maxIntakeRightAmps,'IntakeRightCurrent', ' A',1,2);
+    });
+
+
+    addKeyListener('/SmartDashboard/kicker', (key,value) => {
+        console.log("passing from kicker " + value);
+        changeSwitch(value,'Kicker',true);
+    });
+    addKeyListener('/SmartDashboard/clamp', (key,value) => {
+        changeSwitch(value,'Clamp',true);
+    })
+    addKeyListener('/SmartDashboard/elevatorLowerLimit', (key,value) => {
+        changeSwitch(value,'LowerLimit',true);
+    })
+    addKeyListener('/SmartDashboard/elevatorRatchet', (key,value) => {
+        changeSwitch(value,'Ratchet',true);
+    })
 }
