@@ -74,12 +74,12 @@ function changeSwitch(value,displayAs,on) {
 		red.style.opacity = "100";
 		green.style.opacity = "100";
 		if (value) {
-			console.log("ran1")
+			//console.log("ran1")
 			red.style.transform = "translateY(-35px) translateX(-100px)"
 			green.style.transform = "translateX(0px)";
 		}
 		else {
-			console.log('ran2');
+			//console.log('ran2');
 			green.style.transform = "translateX(100px)"
 			red.style.transform = "translateY(-35px) translateX(0px)";
 		}

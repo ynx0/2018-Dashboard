@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="fontawesome/web-fonts-with-css/css/fontawesome-all.css"></link>
     </head>
 
-<body onkeyPress="return toggleSensorPage(event)" onload="registerHandlers()" onresize="resize()" > <!-- onresize="resize()" -->
+<body onkeyPress="return toggleSensorPage(event)" onload="load()" onresize="resize()" > <!-- onresize="resize()" -->
     <!-- Clock that shows up in top left -->
     <div id="sensorpage">
         <div id="powerStats" class="card"> 
@@ -261,7 +261,7 @@
         <svg class="innerGuageSvg" width="150px" height="100px"> 
            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
         </svg>
-        <p class="guageText">Power Output</p>
+        <p class="guageText">Voltage</p>
         <p id="circleGaugeTextMainPower" class="percentageText">50%</p>
         <p class="startLimit" id="startLimitMainPower">0</p>
         <p class="endLimit" id="endLimitMainPower">0</p>
@@ -319,7 +319,7 @@
         <svg class="innerGuageSvg" width="150px" height="100px"> 
            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
         </svg>
-        <p class="guageText">Elevator Velocity</p>
+        <p class="guageText">Velocity</p>
         <p id="circleGaugeTextElevatorVelocity" class="percentageText">50%</p>
         <p class="startLimit" id="startLimitElevatorVelocity">0</p>
         <p class="endLimit" id="endLimitElevatorVelocity">0</p>
@@ -328,28 +328,32 @@
 
     <div id="timer">2:15</div>
 
-    <div class="gauge" id="gauge2">
-        <svg class="outerGuageSvg" id="gauge2-2" width="150px" height="100px">
+    <div class="gauge" id="gaugeIntakeVelocity2">
+        <svg class="outerGuageSvg" width="150px" height="100px">
             <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
-            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeIntakeVelocity2" d="M25,50 a1,1 0 0,0 100,0"/>
         </svg>
         <svg class="innerGuageSvg" width="150px" height="100px"> 
-            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
         </svg>
-        <p class="guageText">Power Output</p>
-        <p id="powerOutputPercentage" class="percentageText">50%</p>
+        <p class="guageText">Intake Velocity</p>
+        <p id="circleGaugeTextIntakeVelocity2" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitIntakeVelocity2">0</p>
+        <p class="endLimit" id="endLimitIntakeVelocity2">0</p>
     </div>
 
-    <div class="gauge" id="gauge3">
-        <svg class="outerGuageSvg" id="gauge3-3" width="150px" height="100px">
+    <div class="gauge" id="gaugeElevatorVelocity2">
+        <svg class="outerGuageSvg" width="150px" height="100px">
             <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
-            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeElevatorVelocity2" d="M25,50 a1,1 0 0,0 100,0"/>
         </svg>
         <svg class="innerGuageSvg" width="150px" height="100px"> 
-            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
         </svg>
-        <p class="guageText">Power Output</p>
-        <p id="powerOutputPercentage" class="percentageText">50%</p>
+        <p class="guageText">Elevator Velocity</p>
+        <p id="circleGaugeTextElevatorVelocity2" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitElevatorVelocity2">0</p>
+        <p class="endLimit" id="endLimitElevatorVelocity2">0</p>
     </div>
 
     <div class="squareGauge" id="percentageLeft">
@@ -383,7 +387,7 @@
 
         <!-- Tells whether robot is connected to dashboard. -->
         <div id="robot-state">Unknown state</div>
-        <button id="tuning-button">Tuning</button>
+        <!-- <button id="tuning-button">Tuning</button> -->
         <button id="sensorDataButton" onclick="sensorPage(true)">Sensor Data</button>
         <div id="cameraReloadButton">
             <button onclick = "checkCamera()" id="reloadCamera">Reload Feed</button>
@@ -403,20 +407,35 @@
     <!-- The main body of the dashboard, by default contains the gyro monitor and the robot diagram -->
     <div id="gyroArticle">
         <!-- Gyroscope -->
-        <svg id="gyro">
+        <div class="compassDiv" id="compassCompass2">
+                <p class="compassText" id="compassTextCompass2">Yaw</p>
+                <div class="compassDivInner" style="width: 130px; height: 130px;">
+                    <svg width="130" height="130" class="compass" id="compassSVGCompass2">
+                        <circle cx="65" cy="65" r="40" style="fill: #192A31;stroke-width:0; stroke:transparent;"></circle>
+                        <circle cx="65" cy="65" r="3" style="fill: white;stroke-width:0; stroke:transparent;"></circle>
+                        <line class="compassLine" id="compassLineCompass2" x1="65" y1="65" x2="65" y2="105" style="stroke:
+                        rgb(255,255,255);stroke-width:1" />
+                        <line class="compassLine" id="compassLineCompass2" x1="60" y1="100" x2="65" y2="105" style="stroke:
+                        rgb(255,255,255);stroke-width:1" />
+                        <line class="compassLine" id="compassLineCompass2" x1="70" y1="100" x2="65" y2="105" style="stroke:
+                        rgb(255,255,255);stroke-width:1" />
+                    </svg> 
+                </div>
+            </div>
+        <!-- <svg id="gyro">
             <circle id="outerGyroCircle" cx="10vh" cy="9vh" r="7.6vh"></circle>
             <circle id="innerGyroCircle" cx="10vh" cy="9vh" r="4.6vh"></circle>
-            <!-- <rect id="gyroAngle90" x="0" y="0" height="7.6vh" width="2px"></rect> -->
+            <rect id="gyroAngle90" x="0" y="0" height="7.6vh" width="2px"></rect>
 
             <rect id="gyroAngle0" x="10vh" y="-3.5vh" width="1" height="22vh"></rect>
 
-            <!-- <rect id="gyro-arm" x="7.6vh" y="5" width="10" height="7.5vh"></rect>
-            <text id="gyro-number" x="90" y="115">0º</text> -->
-        </svg>
+            <<rect id="gyro-arm" x="7.6vh" y="5" width="10" height="7.5vh"></rect>
+            <text id="gyro-number" x="90" y="115">0º</text>
+        </svg> -->
     </div>
-
+        <!-- src="http://192.168.9.91:8080"  -->
     <div id="camera">
-        <!-- <image onclick="checkCamera()" id="cameraFeed" src="http://192.168.9.91:8080" onerror="this.src='Thomas_Tank_Engine_2.png';"> </image> -->
+        <image onclick="checkCamera()" id="cameraFeed" onerror="this.src='Thomas_Tank_Engine_2.png';"> </image>
     </div>
 
     <!-- 
@@ -582,7 +601,7 @@
         </div>
         -->
     <!-- </aside> -->
-    <div id="login">
+    <!-- <div id="login">
         <div class="slidecontainer"> Move Left Power Gauge
             <input type="range" min="-100" max="100" value="50" class= "slider" onchange="moveLeftMotorGauge(this.value)">
         </div>
@@ -597,7 +616,7 @@
         <div class="slidecontainer"> Change Height
             <input type="range" min="-1" max="100" value="50" class= "slider" onchange="moveElevator(this.value)">
         </div>
-        <input id="connect-address" type="text" value="10.4.1.2" enabled>  <!-- <input id="connect-address" type="text" value="10.4.1.2" enabled>  -->
+        <input id="connect-address" type="text" value="10.4.1.2" enabled>  <!-- <input id="connect-address" type="text" value="10.4.1.2" enabled> 
         <button id="connect" enabled>Connect</button>
         <button onclick="collectedCube(true)">Get Cube</button>
         <button onclick="collectedCube(false)">Drop Cube</button>
@@ -607,7 +626,7 @@
         <button onclick="moveLeftMotorGauge(0); moveRightMotorGauge(0);">Bar Gauge to 0</button>
         <button onclick="tiltRobot(2)">Tilt Robot</button>
         <button onclick="sensorPage(true)">Sensor Page</button>
-    </div>
+    </div> --> -->
 </body>
 
 </html>

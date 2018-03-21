@@ -7,7 +7,7 @@ nt.setReconnectDelay(1000);
 
 nt.start((isConnected, err) => {
     console.log("Started NT client");
-}, 'localhost');//localhost 10.4.1.2
+}, '10.4.1.2');//localhost 10.4.1.2
 
 // Define UI elements
 let ui = {
@@ -101,8 +101,7 @@ addKeyListener('/SmartDashboard/example_variable', (key, value) => {
     //ui.example.button.classList.toggle('active', value);
     ui.example.readout.data = 'Value is ' + (value ? 'true' : 'false');
 });
-
-addKeyListener('/SmartDashboard/time_running', (key, value) => {
+function runTime(value) {
     // Sometimes, nt will pass booleans as strings. This corrects for that.
     if (typeof value === 'string')
         value = value === 'true';
@@ -141,28 +140,26 @@ addKeyListener('/SmartDashboard/time_running', (key, value) => {
         s = 135;
     }
     //nt.putValue(key, false);
-});
-
+};
+    // Load list of prewritten autonomous modes
+    // addKeyListener('/SmartDashboard/time_running', (key, value) => {
+    //     // Clear previous list
+    //     while (ui.autoSelect.firstChild) {
+    //         ui.autoSelect.removeChild(ui.autoSelect.firstChild);
+    //     }
+    //     // Make an option for each autonomous mode and put it in the selector
+    //     for (let i = 0; i < value.length; i++) {
+    //         var option = document.createElement('option');
+    //         option.appendChild(document.createTextNode(value[i]));
+    //         ui.autoSelect.appendChild(option);
+    //     }
+    //     // Set value to the already-selected mode. If there is none, nothing will happen.
+    //     ui.autoSelect.value = nt.getValue('/SmartDashboard/currentlySelectedMode');
+    // });
 // Load list of prewritten autonomous modes
-addKeyListener('/SmartDashboard/time_running', (key, value) => {
-    // Clear previous list
-    while (ui.autoSelect.firstChild) {
-        ui.autoSelect.removeChild(ui.autoSelect.firstChild);
-    }
-    // Make an option for each autonomous mode and put it in the selector
-    for (let i = 0; i < value.length; i++) {
-        var option = document.createElement('option');
-        option.appendChild(document.createTextNode(value[i]));
-        ui.autoSelect.appendChild(option);
-    }
-    // Set value to the already-selected mode. If there is none, nothing will happen.
-    ui.autoSelect.value = nt.getValue('/SmartDashboard/currentlySelectedMode');
-});
-
-// Load list of prewritten autonomous modes
-addKeyListener('/SmartDashboard/autonomous/selected', (key, value) => {
-    ui.autoSelect.value = value;
-});
+// addKeyListener('/SmartDashboard/autonomous/selected', (key, value) => {
+//     ui.autoSelect.value = value;
+// });
 // The rest of the doc is listeners for UI elements being clicked on
 // ui.example.button.onclick = function () {
 //     // Set nt values to the opposite of whether button has active class.
@@ -194,46 +191,6 @@ ui.tuning.set.onclick = function () {
 ui.tuning.get.onclick = function () {
     ui.tuning.value.value = nt.getValue(ui.tuning.name.value);
 };
-
-addKeyListener('/SmartDashboard/match_time', (key, value) => {
-    //Turn seconds passed to time in minutes:seconds as m:visualS
-    var counter = Math.floor(value).toFixed(0);
-    //M = minutes
-    var m = Math.floor(counter/60);
-    //visualS = seconds
-    var visualS = (counter % 60);
-
-    //Control what is displayed on the clock
-    if (visualS < 10) {
-        ui.timer.firstChild.data = m + ':0' + visualS;
-    }
-    else {
-        ui.timer.firstChild.data = m + ':' + visualS;
-    }
-    
-    //Change colors depending on time left in game
-    if (value < 30 && value > 15) {
-        ui.timer.style.color = '#ffff30';
-    }
-    else if (value <= 15 && value > 5) {
-        if (counter % 2 === 0) {
-            ui.timer.style.color = '#ffff30';
-        }
-        else {
-            ui.timer.style.color = '#FF3030';
-        }
-    }
-    else if (value <= 5 && value >= 0) {
-        ui.timer.style.color = '#FF3030';
-    }
-    else if (m === -1) {
-        ui.timer.style.color = '#09b509'
-        ui.timer.firstChild.data = "N/A";
-    }
-    else {
-        ui.timer.style.color = 'white';
-    }
-});
 
 function moveGyro(value) {
     ui.gyro.val = value;
@@ -284,7 +241,9 @@ function sleep(milliseconds) {
 function checkCamera() {
     console.log("Checking for camera");
     var image = document.getElementById("cameraFeed");
+    image.src = '';
     image.src = "http://192.168.9.91:8080";
+    //image.src = 'https://vignette.wikia.nocookie.net/ttte/images/d/d6/MainThomasCGI2.png/revision/latest?cb=20180130081706';
 }
 
 function moveElevator(value) {
@@ -350,6 +309,9 @@ function toggleSensorPage(e) {
             sensorPage(false);
         }
     }
+    else if (keyString == "r") {
+        checkCamera();
+    }
 }
 
 function tiltRobot(value) {
@@ -371,7 +333,10 @@ function addKeyListener(inKey, lambda) {
         };
     });
 };
-
+function load() {
+    registerHandlers();
+    checkCamera();
+}
 
 
 function registerHandlers() {
@@ -426,6 +391,7 @@ function registerHandlers() {
     addKeyListener('/SmartDashboard/intakeVelocity', (key,value) => {
         //console.log("intakeMinVelocity " + intakeMinVelocity + " intake max " + intakeMaxVelocity);
         changeCircle(value,'IntakeVelocity',intakeMinVelocity,intakeMaxVelocity,false,' RPM',2,0,false);
+        changeCircle(value,'IntakeVelocity2',intakeMinVelocity,intakeMaxVelocity,false,' RPM',2,0,false);
     });
 
     addKeyListener('/SmartDashboard/intakeAmps', (key,value) => {
@@ -503,6 +469,7 @@ function registerHandlers() {
 
     addKeyListener('/SmartDashboard/yaw', (key,value) =>  {
         changeCompass(value,"Compass");
+        changeCompass(value,'Compass2');
     });
 
 
@@ -542,6 +509,7 @@ function registerHandlers() {
 
     addKeyListener('/SmartDashboard/elevatorVelocity', (key,value) => {
         changeCircle(value,'ElevatorVelocity',elevatorMinVelocity,elevatorMaxVelocity,false,' RPM',1);
+        changeCircle(value,'ElevatorVelocity2',elevatorMinVelocity,elevatorMaxVelocity,false,' RPM',1);
     });
 
     addKeyListener('/SmartDashboard/elevatorDeploy',(key,value) => {
@@ -552,5 +520,54 @@ function registerHandlers() {
     });
     addKeyListener('/SmartDashboard/elevatorShift', (key,value) => {
         changeArrow(value == "high", 'ElevatorShift');
+    });
+
+    addKeyListener('/SmartDashboard/elevatorPositionPercentage',(key,value) => {
+        moveElevator(value);
+    });
+
+    addKeyListener('/SmartDashboard/hasCube',(key,value) => {
+        collectedCube(value);
+    });
+
+    addKeyListener('/SmartDashboard/match_time', (key, value) => {
+        var timer =document.getElementById('timer');
+        //Turn seconds passed to time in minutes:seconds as m:visualS
+        var counter = Math.floor(value).toFixed(0);
+        //M = minutes
+        var m = Math.floor(counter/60);
+        //visualS = seconds
+        var visualS = (counter % 60);
+
+        //Control what is displayed on the clock
+        if (visualS < 10) {
+            timer.firstChild.data = m + ':0' + visualS;
+        }
+        else {
+            timer.firstChild.data = m + ':' + visualS;
+        }
+        
+        //Change colors depending on time left in game
+        if (value < 30 && value > 15) {
+            timer.style.color = '#ffff30';
+        }
+        else if (value <= 15 && value > 5) {
+            if (counter % 2 === 0) {
+                timer.style.color = '#ffff30';
+            }
+            else {
+                timer.style.color = '#FF3030';
+            }
+        }
+        else if (value <= 5 && value >= 0) {
+            timer.style.color = '#FF3030';
+        }
+        else if (m === -1) {
+            timer.style.color = '#09b509'
+            timer.firstChild.data = "N/A";
+        }
+        else {
+            timer.style.color = 'white';
+        }
     });
 }
