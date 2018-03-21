@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="fontawesome/web-fonts-with-css/css/fontawesome-all.css"></link>
     </head>
 
-<body onkeyPress="toggleSensorPage()" onload="registerHandlers()" onresize="resize()" > <!-- onresize="resize()" -->
+<body onkeyPress="return toggleSensorPage(event)" onload="registerHandlers()" onresize="resize()" > <!-- onresize="resize()" -->
     <!-- Clock that shows up in top left -->
     <div id="sensorpage">
         <div id="powerStats" class="card"> 
@@ -120,7 +120,7 @@
             </div>
 
             <div class="card" id="elevator">
-                <p class="title">Intake</p>
+                <p class="title">Elevator</p>
                 <div>
                     <div class="switch" id="switchKicker">
                         <div id="switchGreenKicker" class="switchGreen"> </div>
@@ -142,7 +142,42 @@
                         <div id="switchRedRatchet" class="switchRed"> </div>
                         <p class="switchText">Ratchet</p>
                     </div>
-                    <svg id="elevatorSVG" style="transform: translateY(-225px);"><line x1="0" y1="85" x2="480" y2="85" style="stroke:rgb(255,255,255);stroke-width:1" /></svg>
+                    <svg id="elevatorSVG" style="transform: translateY(-225px);">
+                        <line x1="0" y1="85" x2="480" y2="85" style="stroke:rgb(255,255,255);stroke-width:1" />
+                        <line x1="0" y1="175" x2="480" y2="175" style="stroke:rgb(255,255,255);stroke-width:1" />
+                    </svg>
+
+                    <div class="numberReadoutParent" id="numberReadoutParentElevatorPosition">
+                        <p class="numberReadoutName">Position</p>
+                        <div class="numberReadout" id="numberReadoutElevatorPosition">
+                            <p class="numberReadoutValue" id="numberReadoutValueElevatorPosition"></p>
+                        </div>
+                    </div>
+                    <div class="numberReadoutParent" id="numberReadoutParentElevatorAmps">
+                        <p class="numberReadoutName">Amps</p>
+                        <div class="numberReadout" id="numberReadoutElevatorAmps">
+                            <p class="numberReadoutValue" id="numberReadoutValueElevatorAmps"></p>
+                        </div>
+                    </div>
+
+
+
+                    <div id="lockDivElevatorDeploy" class="lock">
+                        <p class="lockText">Elevator Deploy</p>
+                        <i id="ElevatorDeploy" class="fa fa-lock lockClass"></i>
+                    </div>
+
+                    <div id="arrowTransformElevatorShift" class="arrowDiv">
+                        <p class="arrowTitle">Elevator Shift</p>
+                        <div class="arrow" id="arrowElevatorShift">             
+                            <i class="fa fa-caret-up" id="arrowUpElevatorShift"></i>
+                        </div>
+                    </div>
+
+                    <div id="lockDivRungsDeploy" class="lock">
+                        <p class="lockText">Rungs Deploy</p>
+                        <i id="RungsDeploy" class="fa fa-lock lockClass"></i>
+                    </div>
                 </div>
                 <!-- 
                 <div class="switch" id="switchTest">
@@ -218,7 +253,19 @@
         <p class="endLimit" id="endLimitIntakeAmps">0</p>
     </div>
 
-
+    <div class="gauge" id="gaugeMainPower">
+        <svg class="outerGuageSvg" width="150px" height="100px">
+            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeMainPower" d="M25,50 a1,1 0 0,0 100,0"/>
+        </svg>
+        <svg class="innerGuageSvg" width="150px" height="100px"> 
+           <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
+        </svg>
+        <p class="guageText">Power Output</p>
+        <p id="circleGaugeTextMainPower" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitMainPower">0</p>
+        <p class="endLimit" id="endLimitMainPower">0</p>
+    </div>
 
 
 
@@ -264,21 +311,22 @@
         <p class="endLimit" id="endLimitRightVelocity">0</p>
     </div>
 
-
-    <div id="timer">2:15</div>
-    <div class="gauge" id="powerOutput">
-        <svg class="outerGuageSvg" id="powerGauge" width="150px" height="100px">
+    <div class="gauge" id="gaugeElevatorVelocity">
+        <svg class="outerGuageSvg" width="150px" height="100px">
             <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
-            <path class = "gaugeCircle" id="powerGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
+            <path class = "sensorGaugeCircle" id="circleGaugeElevatorVelocity" d="M25,50 a1,1 0 0,0 100,0"/>
         </svg>
         <svg class="innerGuageSvg" width="150px" height="100px"> 
            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
         </svg>
-        <p class="guageText">Power Output</p>
-        <p id="powerOutputPercentage" class="percentageText">50%</p>
+        <p class="guageText">Elevator Velocity</p>
+        <p id="circleGaugeTextElevatorVelocity" class="percentageText">50%</p>
+        <p class="startLimit" id="startLimitElevatorVelocity">0</p>
+        <p class="endLimit" id="endLimitElevatorVelocity">0</p>
     </div>
 
 
+    <div id="timer">2:15</div>
 
     <div class="gauge" id="gauge2">
         <svg class="outerGuageSvg" id="gauge2-2" width="150px" height="100px">
@@ -302,18 +350,6 @@
         </svg>
         <p class="guageText">Power Output</p>
         <p id="powerOutputPercentage" class="percentageText">50%</p>
-    </div>
-
-    <div class="gauge" id="carraigeMotorGauge">
-        <svg class="outerGuageSvg" id="carraigeMotorGaugeSVG" width="150px" height="100px">
-            <circle class = "backgroundGaugeCircle" cx="75" cy="50" r="50"/>
-            <path class = "gaugeCircle" id="carraigeMotorGaugeCircle" d="M25,50 a1,1 0 0,0 100,0"/>
-        </svg>
-        <svg class="innerGuageSvg" width="150px" height="100px"> 
-            <circle class="innerCircle" cx="75" cy="50" r="35"></circle>
-        </svg>
-        <p class="guageText">Carriage Motor</p>
-        <p id="carraigeMotorGaugeText" class="percentageText">50%</p>
     </div>
 
     <div class="squareGauge" id="percentageLeft">
@@ -399,11 +435,10 @@
         <div id="svgArticle">
             <!-- Example robot diagram, arm moves when encoder value changes -->
             <svg id="robot-diagram" width="332" height="350">
-                <!-- <text x="120" y="340">Robot Diagram</text> -->
-                <rect id="Elevator" x="180" y="20" width="10" height="220"></rect>
-
-                <rect id="ElevatorCarriage" x="140" y="80" width="50" height="10"></rect>
-                <rect style="fill:rgb(255,213,46);stroke-width:0;" id="Cube" x="139" y="45" width="34" height="34"></rect>
+                <rect id="Elevator" x="90" y="20" width="10" height="220"></rect>
+                <!-- <text x="120" y="340">401</text> -->
+                <rect id="ElevatorCarriage" x="50" y="80" width="50" height="10"></rect>
+                <rect style="fill:rgb(255,213,46);stroke-width:0;" id="Cube" x="49" y="45" width="34" height="34"></rect>
 
                 <!-- <rect x="75" y="360" width="230" height="40"></rect> -->
                 <rect x="85" y="240" width="210" height="40"></rect>
@@ -412,12 +447,14 @@
                 <circle cx="210" cy="280" r="15"></circle>
                 <circle cx="270" cy="280" r="15"></circle>
 
+                <line x1="100" y1="110" x2="220" y2="270" style="stroke:rgb(255,255,255);stroke-width:2" />
+                <line x1="100" y1="100" x2="260" y2="270" style="stroke:rgb(255,255,255);stroke-width:2" />
                 <!-- <line x1="202" y1="348" x2="217" y2="333" style="stroke:rgb(140,76,169);stroke-width:1"/>
                 <line x1="217" y1="333" x2="237" y2="333" style="stroke:rgb(140,76,169);stroke-width:1"/>
                 <line x1="237" y1="333" x2="247" y2="323" style="stroke:rgb(140,76,169);stroke-width:1"/>
                 <circle cx="200" cy="350" r="3" style="fill:transparent;stroke-width:1; stroke:rgb(140,76,169);"></circle> -->
                 <rect x="60" y="250" width="250" height="30"></rect>
-                <text id="team" x="185" y="275" text-anchor="middle"></text>
+                <text id="team" x="185" y="275" text-anchor="middle">401</text>
             </svg>
         </div>
 

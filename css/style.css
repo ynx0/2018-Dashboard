@@ -22,6 +22,8 @@ body {
     -ms-user-select: none;
     user-select: none;
     color: white;
+    animation-duration: .1s;
+    animation-iteration-count: 2;
     overflow: hidden;
     background: #1F3239;
 }
@@ -145,7 +147,7 @@ header {
 }
 #elevator  {
     transform: translate3d(410px,-730px,0);
-    height: 365px;
+    height: 260px;
     width: 480px;
 }
 #elevatorSVG {
@@ -161,6 +163,7 @@ header {
 
 
 #sensorpage {
+    overflow: hidden;
     left: 20px;
     top: 20px;
     transform: translate3d(-1365px,0px,0px);
@@ -662,7 +665,7 @@ body.login-close #login {
 
 /*GAUGE IDS AND TRANSFORMS*/
 
-#powerOutput {
+#gaugeMainPower {
     transform-origin: top;
     transform: translate3d(450px,80px,0);
 }
@@ -717,6 +720,24 @@ body.login-close #login {
 #numberReadoutParentIntakeRightCurrent {
     transform: translate3d(495px,-100px,0);
 }
+#numberReadoutParentElevatorPosition {
+    transform: translate3d(20px,-495px,0);
+}
+#numberReadoutParentElevatorAmps {
+    transform: translate3d(360px,-549px,0);
+}
+#gaugeElevatorVelocity {
+    transform: translate3d(-759px,250px,0);
+}
+#lockDivElevatorDeploy {
+    transform: translate3d(39px,-523px,0);
+}
+#lockDivRungsDeploy {
+    transform: translate3d(339px,-702px,0);
+}
+#arrowTransformElevatorShift {
+    transform: translate3d(180px,-562px,0);
+}
 
 
 #switchKicker {
@@ -749,6 +770,11 @@ body.login-close #login {
     font-size: 70px;
 /**    transition: 1s cubic-bezier(0,.99,.3,1.01);
 */}
+#arrowUpElevatorShift {
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    font-size: 70px;
+}
 .arrow {
     transform: translateX(45px) translateY(-15px);
     width: 40px;
@@ -803,7 +829,16 @@ body.login-close #login {
     font-size: 10px;
 }
 .lockClass {
-    font-size: 70px;
+    font-size: 30px;
+    text-align: center;
+    padding-left: 41px;
+}
+.lock {
+    width: 110px;
+}
+.lockText {
+    font-size: 15px;
+    text-align: center;
 }
 #percentageLeft {
     z-index: 1;
@@ -824,6 +859,9 @@ body.login-close #login {
 @keyframes maxed {
     25% {fill: rgb(255,0,0);}
     50% {fill: rgb(255,255,255);}
+}
+@keyframes bodyFlash {
+    50% {background-color: rgb(255,213,46);}
 }
 /*
  Blur transition that does not work

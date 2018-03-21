@@ -127,7 +127,7 @@ function changeArrow(value,displayAs) {
 }
 //Change lock value (string, string id)
 function changeLock(value,displayAs) {
-	var lock = document.getElementById("lock" + displayAs);
+	var lock = document.getElementById(displayAs);
 	if (value === "locked") {
 		//to lock
 		if (lock.classList.contains("fa-lock-open")) {
@@ -156,4 +156,14 @@ function changeCompass(value,displayAs) {
 	var compassLine = document.getElementById("compassSVG" + displayAs);
 	value=value+180;
 	compassLine.style.transform = "rotate(" + value + "deg)";
+}
+
+function changeBody(value) {
+	var body = document.body;
+	if (value) {
+		runAnimation(body,"bodyFlash");
+	}
+	else {
+		runAnimation(body,"");
+	}
 }

@@ -1,3 +1,5 @@
+
+
 let ntClient = require("wpilib-nt-client");
 let nt = new ntClient.Client();
 
@@ -248,19 +250,19 @@ function collectedCube(collected) {
     var cameraBackground = document.getElementById("camera");
     if (collected === true) {
         var x = cube.style.x
-        if (x === "139") {
+        if (x === "49px") {
         }
         else {
             runAnimation(cameraBackground, "flash");
-            player.play('Beep.wav', function(err){})
+            //player.play('Beep.wav', function(err){})
         }
         cube.style.opacity = 100;
-        cube.style.x = 139;
+        cube.style.x = "49px";
         //'#333 to #FFD52E';
     }
     else if (collected === false) {
         cube.style.opacity = 0;
-        cube.style.x= 50;
+        cube.style.x= "-40px";
     }
 }
 function resize() {
@@ -329,16 +331,24 @@ function sensorPage(value) {
         body.style.transform = "translate3d(0px,0px,0px)"
     }
 }
-function toggleSensorPage() {
-    var bodyX = document.body.style.transform;
-    //console.log(bodyX);
-    if (bodyX == "translate3d(0px, 0px, 0px)") {
-        //console.log("moving to sensor page");
-        sensorPage(true);
+function toggleSensorPage(e) {
+    var keynum;
+    if (window.event) {
+        keynum = e.keyCode;
     }
-    else {
-        console.log("resetting");
-        sensorPage(false);
+    else if(e.which) {
+        keynum = e.which;
+    }
+    var keyString = String.fromCharCode(keynum);
+    if (keyString == "a" || keyString == "s" || keyString == "d" || keyString == "f") {
+        var bodyX = document.body.style.transform;
+        //console.log(bodyX);
+        if (bodyX == "translate3d(0px, 0px, 0px)") {
+            sensorPage(true);
+        }
+        else {
+            sensorPage(false);
+        }
     }
 }
 
@@ -373,6 +383,9 @@ function registerHandlers() {
     var maxIntakeLeftAmps = 0;
     var maxIntakeRightAmps = 0;
     var maxIntakeAmps = 0; 
+    var maxElevatorAmps = 0;
+    var elevatorMinVelocity = 0;
+    var elevatorMaxVelocity = 0;
 
 
     addKeyListener('/SmartDashboard/maxDriveAmps', (key,value) => {
@@ -399,10 +412,19 @@ function registerHandlers() {
     });
     addKeyListener('/SmartDashboard/maxIntakeAmps', (key,value) => {
         maxIntakeAmps = value;
+    });
+    addKeyListener('/SmartDashboard/maxElevatorAmps', (key,value) => {
+        maxElevatorAmps = value;
+    });
+    addKeyListener('/SmartDashboard/elevatorMinVelocity', (key,value) => {
+        elevatorMinVelocity = value;
+    })
+    addKeyListener('/SmartDashboard/elevatorMaxVelocity', (key,value) => {
+        elevatorMaxVelocity = value;
     })
 
     addKeyListener('/SmartDashboard/intakeVelocity', (key,value) => {
-        console.log("intakeMinVelocity " + intakeMinVelocity + " intake max " + intakeMaxVelocity);
+        //console.log("intakeMinVelocity " + intakeMinVelocity + " intake max " + intakeMaxVelocity);
         changeCircle(value,'IntakeVelocity',intakeMinVelocity,intakeMaxVelocity,false,' RPM',2,0,false);
     });
 
@@ -410,14 +432,17 @@ function registerHandlers() {
         changeCircle(value,'IntakeAmps',0,90,false,'A',2,0,false,maxIntakeAmps);
     });
     addKeyListener('/SmartDashboard/intakePos', (key,value) => {
-        console.log("maxIntakeAmps is " + maxIntakeAmps);
+        //console.log("maxIntakeAmps is " + maxIntakeAmps);
         changeNumber(value,0,maxIntakeAmps,'IntakePosition', ' A',1,2);
     });
 
 
     addKeyListener('/SmartDashboard/vbus', (key, value) => {
         changeCircle(value,'Voltage',6,15,false, 'V',2,0);
+        changeCircle(value,'MainPower',6,15,false, 'V',2,0);
     });
+
+
 
     addKeyListener('/SmartDashboard/totalAmps', (key, value) => {
         changeNumber(value,0,200,'TotalAmps', ' A');
@@ -482,17 +507,17 @@ function registerHandlers() {
 
 
     addKeyListener('/SmartDashboard/intakeLeftAmps', (key,value) => {
-        console.log("passing " + value + " from 0 to " + maxIntakeLeftAmps);
+        //console.log("passing " + value + " from 0 to " + maxIntakeLeftAmps);
         changeNumber(value,0,maxIntakeLeftAmps,'IntakeLeftCurrent', ' A',1,2);
     });
     addKeyListener('/SmartDashboard/intakeRightAmps', (key,value) => {
-        console.log("passing " + value + " from 0 to " + maxIntakeRightAmps);
+        //console.log("passing " + value + " from 0 to " + maxIntakeRightAmps);
         changeNumber(value,0,maxIntakeRightAmps,'IntakeRightCurrent', ' A',1,2);
     });
 
 
     addKeyListener('/SmartDashboard/kicker', (key,value) => {
-        console.log("passing from kicker " + value);
+        //console.log("passing from kicker " + value);
         changeSwitch(value,'Kicker',true);
     });
     addKeyListener('/SmartDashboard/clamp', (key,value) => {
@@ -500,8 +525,32 @@ function registerHandlers() {
     })
     addKeyListener('/SmartDashboard/elevatorLowerLimit', (key,value) => {
         changeSwitch(value,'LowerLimit',true);
-    })
+        changeBody(value);
+    });
     addKeyListener('/SmartDashboard/elevatorRatchet', (key,value) => {
         changeSwitch(value,'Ratchet',true);
-    })
+    });
+
+
+    addKeyListener('/SmartDashboard/elevatorPosition', (key,value) => {
+        changeNumber(value,0,0,'ElevatorPosition',' R',1,2);
+    });
+
+    addKeyListener('/SmartDashboard/elevatorAmps', (key,value) => {
+        changeNumber(value,0,maxElevatorAmps,'ElevatorAmps',' A',1,2);
+    });
+
+    addKeyListener('/SmartDashboard/elevatorVelocity', (key,value) => {
+        changeCircle(value,'ElevatorVelocity',elevatorMinVelocity,elevatorMaxVelocity,false,' RPM',1);
+    });
+
+    addKeyListener('/SmartDashboard/elevatorDeploy',(key,value) => {
+        changeLock(value,'ElevatorDeploy');
+    });
+    addKeyListener('/SmartDashboard/rungsDeploy', (key,value) => {
+        changeLock(value,'RungsDeploy');
+    });
+    addKeyListener('/SmartDashboard/elevatorShift', (key,value) => {
+        changeArrow(value == "high", 'ElevatorShift');
+    });
 }
